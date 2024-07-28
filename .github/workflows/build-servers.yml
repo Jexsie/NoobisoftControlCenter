@@ -18,6 +18,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '21'
+        cache: 'maven'
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -27,7 +28,7 @@ jobs:
     - name: Build Game1 Server
       run: |
         cd needfortoken
-        mvn clean install
+        ./mvnw clean verify
         cd ..
 
     - name: Build Game1 Frontend
@@ -39,7 +40,7 @@ jobs:
     - name: Build Game2 Server
       run: |
         cd tokemon
-        mvn clean install
+        ./mvnw clean verify
         cd ..
 
     - name: Build Game2 Frontend
@@ -51,7 +52,7 @@ jobs:
     - name: Build General Server
       run: |
         cd Noobisoft-server
-        mvn clean install
+        ./mvnw clean verify
         cd ..
 
     - name: Build General Frontend
