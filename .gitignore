@@ -28,8 +28,8 @@ hs_err_pid*
 # Maven
 target/
 
-# #Environment data
-# *.env
+#Environment data
+*.env
 
 
 # Logs
@@ -44,7 +44,6 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
-*.local
 
 # Editor directories and files
 .vscode/*
