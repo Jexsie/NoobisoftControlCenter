@@ -28,9 +28,6 @@ hs_err_pid*
 # Maven
 target/
 
-#Environment data
-*.env
-
 
 # Logs
 logs
