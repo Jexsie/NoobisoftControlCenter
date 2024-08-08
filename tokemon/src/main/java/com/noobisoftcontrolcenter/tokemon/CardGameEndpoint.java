@@ -1,22 +1,26 @@
 package com.noobisoftcontrolcenter.tokemon;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.openelements.hedera.base.Nft;
 import com.openelements.hedera.base.NftClient;
 import com.openelements.hedera.base.NftRepository;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.factory.annotation.Value;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class CardGameEndpoint {
@@ -44,10 +48,24 @@ public class CardGameEndpoint {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private PinataService pinataService;
+
+    private static final String[] CID = {
+            "QmUE8Zdp7GMa7SXgWySyKGtB6qWWimaBwMtJbH25vb1XeT",
+            "QmVdyYNQSHXWLpWifxYg3zCbw3fA3pUSUxEfjgERfybkgK",
+            "QmdkFkY4sH3A5jLDqVLuAHYF13vhhxrkyBRFmhuFVHYJ8p",
+            "QmVwpPLfWqXsTdhZq9CoFEiuRohtdMbUf7BMP4un1hn9Xv",
+            "QmP8TMfxRCaVtYDVtnNSBTT5e1eXJ7AESN3E9naayd7dkk",
+            "Qmf6kfX6Vcp7NRnVyXcj9HPgkf5B2N73wmnpX7rub9duBc",
+            "QmeRs7v3wc6WRSi4YNy9sTU1E3Rhw48JPZyePTNKbAJu3f",
+            "QmZdXfUDvE4dnChNJRBeHdZ113SwvJkx4hbrSFByn24Fp6"
+    };
+
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")
-    public List<String> getCardsForUser(@RequestParam String userMail) throws Exception {
-        final List<String> results = new ArrayList<>();
+    public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
+        final List<Map<String, Object>> results = new ArrayList<>();
 
         TokenId cardTokenId = tokenService.createToken("CardToken", "CTKN", 1000);
 
@@ -59,15 +77,7 @@ public class CardGameEndpoint {
         final AccountId accountId = adminBackendService.getHederaAccountForUser(userMail);
         final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
-        // Determine the cards to assign based on the user
-        List<String> nftMetadata;
-        if (userMail.equals("foo@bar.com")) { // User 1
-            nftMetadata = List.of("monster1", "monster2", "monster3");
-        } else if (userMail.equals("hendrik@openelements.com")) { // User 2
-            nftMetadata = List.of("skate1", "skate2", "skate3");
-        } else {
-            throw new RuntimeException("Unknown user");
-        }
+        List<String> nftMetadata = List.of(CID);
 
         if (nfts.isEmpty()) {
             final List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
@@ -75,9 +85,14 @@ public class CardGameEndpoint {
             for (Long serial : serials) {
                 nftClient.transferNft(cardTokenId, serial, tokenAdmin, tokenAdminPrivateKey, accountId);
             }
-            results.addAll(nftMetadata);
+
+            for (String ipfsHash : nftMetadata) {
+                results.addAll((Collection<? extends Map<String, Object>>) pinataService.getMetadata(ipfsHash));
+            }
         } else {
-            nfts.forEach(nft -> results.add(new String(nft.metadata())));
+            for (Nft nft : nfts) {
+                results.add(Map.of("metadata", new String(nft.metadata())));
+            }
         }
 
         return results;
