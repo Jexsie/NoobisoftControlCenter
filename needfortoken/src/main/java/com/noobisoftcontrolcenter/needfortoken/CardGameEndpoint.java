@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ import com.openelements.hedera.base.NftRepository;
 
 import io.swagger.annotations.ApiOperation;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class CardGameEndpoint {
 
@@ -52,14 +54,11 @@ public class CardGameEndpoint {
     private PinataService pinataService;
 
     private static final String[] CID = {
-            "QmUE8Zdp7GMa7SXgWySyKGtB6qWWimaBwMtJbH25vb1XeT",
-            "QmVdyYNQSHXWLpWifxYg3zCbw3fA3pUSUxEfjgERfybkgK",
-            "QmdkFkY4sH3A5jLDqVLuAHYF13vhhxrkyBRFmhuFVHYJ8p",
-            "QmVwpPLfWqXsTdhZq9CoFEiuRohtdMbUf7BMP4un1hn9Xv",
-            "QmP8TMfxRCaVtYDVtnNSBTT5e1eXJ7AESN3E9naayd7dkk",
-            "Qmf6kfX6Vcp7NRnVyXcj9HPgkf5B2N73wmnpX7rub9duBc",
-            "QmeRs7v3wc6WRSi4YNy9sTU1E3Rhw48JPZyePTNKbAJu3f"
-    };
+        "QmWEDxGL5LJs4WTELCNSGjaBqAAa3y7CmM6j4aWqN4Xf2X",
+        "QmT9zHArvAJmV9wj1nQUESJoYZsSaLCuBZuzzgSDa7vscx",
+        "QmQ3Ex2mwmj9VRK8MBPTozeYcNZJ7hQgkB52uwmHc21Nvt",
+        "QmUp3S2izfabxTmUbMtmACdWi55KFkLPbLqYnC5m6tsFyi",
+};
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")

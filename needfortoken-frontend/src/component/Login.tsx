@@ -1,35 +1,24 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addUser, checkUser, updateUserStatus } from "user-storage";
+import { setActiveUser } from "../utils";
+import { login } from "../api";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ email: "", accountId: "" });
 
-  const handleLogin = useCallback(
-    (e) => {
-      e.preventDefault();
-      // console.log(user, 'ferferfweer')
-      if (!user.email && !user.password) return;
+  const handleLogin = useCallback(async (e) => {
+    e.preventDefault();
+    if (!user.email || !user.accountId) return;
 
-      const { isUserAvailable, userData } = checkUser(user.email);
-
-      if (isUserAvailable) {
-        return userData.password === user.password
-          ? (updateUserStatus({
-              ...userData,
-              loggedIn: true,
-              app: "needfortoken",
-            }),
-            navigate("/dashboard"))
+    await login(user)
+      .then((res) => {
+        return res.status === 200
+          ? (setActiveUser(user.email), navigate("/dashboard"))
           : null;
-      } else {
-        addUser({ ...user, loggedIn: true, app: "needfortoken" });
-        return navigate("/dashboard");
-      }
-    },
-    [navigate, user]
-  );
+      })
+      .catch((err) => console.error(err.message));
+  }, []);
   return (
     <div
       className="w-full h-screen flex justify-center items-center"
@@ -68,18 +57,18 @@ export default function Login() {
               id="password"
               className="block mb-2 text-sm font-medium text-gray-900"
             >
-              Your password
+              Your account ID
             </label>
             <input
               type="password"
-              name="password"
-              id="password"
+              name="accountId"
+              id="accountId"
               placeholder="••••••••"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               onChange={(e) =>
-                setUser((prev) => ({ ...prev, password: e.target.value }))
+                setUser((prev) => ({ ...prev, accountId: e.target.value }))
               }
-              value={user.password}
+              value={user.accountId}
               required
             />
           </div>

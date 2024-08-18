@@ -1,16 +1,23 @@
 import Skateboard from "./Skateboard";
-import monster11 from "../assets/Monster-11.png";
-import monster3 from "../assets/Monster-3.png";
-
-const skins = [
-  { name: "MONSTER 11", img: monster11 },
-  { name: "MONSTER 3", img: monster3 },
-  { name: "MONSTER 3", img: monster3 },
-  { name: "MONSTER 3", img: monster3 },
-  { name: "MONSTER 3", img: monster3 },
-];
+import { useUserNfts } from "../hooks";
+import { getUser } from "../utils";
+import { useMemo } from "react";
 
 export default function Dashboard() {
+  const { isLoading, nfts } = useUserNfts(getUser());
+
+  if (isLoading) return <div>Loading...</div>;
+
+  const skateboard = useMemo(
+    () =>
+      nfts.length ? nfts.find((nft) => nft.name === "Skateboard").image : null,
+    [nfts]
+  );
+
+  const validNfts = useMemo(
+    () => nfts.filter((nft) => nft.name !== "card"),
+    [nfts]
+  );
   return (
     <div className=" py-24 sm:py-32 h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col justify-center items-center">
@@ -29,8 +36,8 @@ export default function Dashboard() {
           role="list"
           className="mx-auto mt-20 flex justify-center items-center flex-wrap gap-4"
         >
-          {skins.map((skin) => (
-            <Skateboard name={skin.name} src={skin.img} />
+          {validNfts.map((nft) => (
+            <Skateboard nft={nft} skate={skateboard} />
           ))}
         </ul>
       </div>

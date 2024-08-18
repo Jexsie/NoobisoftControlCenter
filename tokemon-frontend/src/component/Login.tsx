@@ -1,30 +1,19 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { addUser, checkUser, updateUserStatus } from "user-storage";
+import { login } from "../api";
+import { setActiveUser } from "../utils";
 export default function Login() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: "", password: "" });
+  const [user, setUser] = useState({ email: "", accountId: "" });
 
-  const handleLogin = useCallback(
-    (e) => {
-      e.preventDefault();
-      // console.log(user, 'ferferfweer')
-      if (!user.email && !user.password) return;
+ const handleLogin = useCallback(async (e) => {
+  e.preventDefault()
+  if(!user.email || !user.accountId) return
 
-      const { isUserAvailable, userData } = checkUser(user.email);
-
-      if (isUserAvailable) {
-        return userData.password === user.password
-          ? (updateUserStatus({ ...userData, loggedIn: true, app: "tokemon" }),
-            navigate("/dashboard"))
-          : null;
-      } else {
-        addUser({ ...user, loggedIn: true, app: "tokemon" });
-        return navigate("/dashboard");
-      }
-    },
-    [navigate, user]
-  );
+  await login(user).then((res) => {
+    return res.status === 200 ? (setActiveUser(user.email), navigate('/dashboard')) : null
+  }).catch((err) => console.error(err.message))
+ }, [])
   return (
     <div
       className="w-full h-screen flex justify-center items-center"
@@ -60,39 +49,30 @@ export default function Login() {
           </div>
           <div>
             <label
-              id="password"
+              id="accountId"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your password
+              Your account ID
             </label>
             <input
               type="password"
-              name="password"
-              id="password"
+              name="accountId"
+              id="accountId"
               placeholder="••••••••"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) =>
-                setUser((prev) => ({ ...prev, password: e.target.value }))
+                setUser((prev) => ({ ...prev, accountId: e.target.value }))
               }
-              value={user.password}
+              value={user.accountId}
               required
             />
           </div>
           <button
-            type="submit"
+            onClick={handleLogin}
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Login / Create account
           </button>
-          {/* <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
-            Not registered?{" "}
-            <a
-              href="#"
-              className="text-blue-700 hover:underline dark:text-blue-500"
-            >
-              Create account
-            </a>
-          </div> */}
         </form>
       </div>
     </div>

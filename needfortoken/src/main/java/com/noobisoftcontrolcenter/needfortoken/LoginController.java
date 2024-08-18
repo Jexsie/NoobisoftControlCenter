@@ -2,8 +2,10 @@ package com.noobisoftcontrolcenter.needfortoken;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
 @ApiOperation("Login controller")
 @RestController
 @RequestMapping("/api")

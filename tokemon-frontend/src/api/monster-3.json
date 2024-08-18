@@ -1,0 +1,9 @@
+[
+    {
+    "name": "Monster 3",
+    "game": "tokemon",
+    "image": "QmXHqHKEmgx6C2QKMQevALbBFfwVib2aSCBE8h8dusYjjE",
+    "description": "A nice monster",
+    "tags": ["named", "image", "withDescription"]
+}
+]

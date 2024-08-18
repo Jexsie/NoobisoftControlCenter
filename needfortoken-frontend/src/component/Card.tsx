@@ -1,7 +1,9 @@
-import card from "../assets/card-cropped.svg";
-// import monster from "../assets/Monster-2.svg";
+import { NftMeta } from "../types";
 
-const Card = ({ name, src }: { name: string; src: string }) => {
+const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
+  const { name, image: src, tags } = nft;
+
+  if (name === "card") return;
   return (
     <div
       // style={{ height: "100vh", width: "100vw" }}
@@ -24,9 +26,7 @@ const Card = ({ name, src }: { name: string; src: string }) => {
           <h2 style={{ fontSize: "40px" }} className="font-bold font-bebas">
             {name}
           </h2>
-          <p className="text-lg">
-            USER XXX
-          </p>
+          <p className="text-lg">USER XXX</p>
         </div>
         <div className="absolute left-6 bottom-6 flex justify-center text-white">
           <p

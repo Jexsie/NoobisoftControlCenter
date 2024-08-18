@@ -1,0 +1,9 @@
+[
+    {
+    "name": "card",
+    "game": "needfortoken",
+    "image": "QmYoPMaLisGy97mF6ptR9XavGUrbfyED7Ko7224kVtp89f",
+    "description": "This a card",
+    "tags": ["named", "image", "withDescription"]
+}
+]
