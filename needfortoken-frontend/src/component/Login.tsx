@@ -7,18 +7,23 @@ export default function Login() {
   const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", accountId: "" });
 
-  const handleLogin = useCallback(async (e) => {
-    e.preventDefault();
-    if (!user.email || !user.accountId) return;
+  const handleLogin = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!user.email || !user.accountId) return;
 
-    await login(user)
-      .then((res) => {
-        return res.status === 200
-          ? (setActiveUser(user.email), navigate("/dashboard"))
-          : null;
-      })
-      .catch((err) => console.error(err.message));
-  }, []);
+      await login(user)
+        .then((res) => {
+          if (res.status === 200) {
+            setActiveUser(user.email);
+            navigate("/dashboard");
+          }
+        })
+        .catch((err) => console.error(err.message));
+    },
+    [navigate, user]
+  );
+
   return (
     <div
       className="w-full h-screen flex justify-center items-center"
@@ -79,12 +84,6 @@ export default function Login() {
           >
             Login / Create account
           </button>
-          {/* <div className="text-sm font-medium text-gray-500">
-            Not registered?{" "}
-            <a href="#" className="text-blue-700 hover:underline">
-              Create account
-            </a>
-          </div> */}
         </form>
       </div>
     </div>

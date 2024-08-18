@@ -1,8 +1,7 @@
-import skateboard from "../assets/new-board.png";
 import { NftMeta } from "../types";
 
 const Skateboard = ({ nft, skate }: { nft: NftMeta; skate: string }) => {
-  const { name, image: src, tags } = nft;
+  const { name, image: src } = nft;
 
   if (name === "Skateboard") return;
   return (

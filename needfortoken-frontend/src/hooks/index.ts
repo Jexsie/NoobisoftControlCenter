@@ -14,7 +14,6 @@ export function useUserNfts(email: string) {
 
   useEffect(() => {
     if (!isLoading && data) {
-      // Preload images and update nfts
       const preloadImages = async () => {
         const updatedNfts = await Promise.all(
           data.map(async (nft) => {
@@ -48,7 +47,7 @@ export function useUserNfts(email: string) {
   }, [isLoading, data]);
 
   return {
-    nfts: nfts ?? [],
+    nfts,
     isLoading,
     isValidating,
     error,

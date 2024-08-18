@@ -2,11 +2,10 @@ import Card from "./Card";
 import { useUserNfts } from "../hooks";
 import { useMemo } from "react";
 import { getUser } from "../utils";
+import Skeleton from "./Skeleton";
 
 export default function Dashboard() {
   const { isLoading, nfts } = useUserNfts(getUser());
-
-  if (isLoading) return <div>Loading...</div>;
 
   const card = useMemo(
     () => (nfts.length ? nfts.find((nft) => nft.name === "card").image : null),
@@ -17,7 +16,7 @@ export default function Dashboard() {
     () => nfts.filter((nft) => nft.name !== "Skateboard"),
     [nfts]
   );
-  console.log(card, "sdfgdfg");
+
   return (
     <div className=" py-24 sm:py-32 h-screen">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col justify-center items-center">
@@ -32,14 +31,21 @@ export default function Dashboard() {
             Praesentium, eaque.
           </p>
         </div>
-        <ul
-          role="list"
-          className="mx-auto mt-20 flex justify-center items-center flex-wrap gap-16"
-        >
-          {validNfts.map((nft) => (
-            <Card key={nft.image} nft={nft} card={card} />
-          ))}
-        </ul>
+        {isLoading ? (
+          <div className="m-4 flex gap-6 mx-auto max-w-2xl lg:mx-0">
+            <Skeleton />
+            <Skeleton />
+          </div>
+        ) : (
+          <ul
+            role="list"
+            className="mx-auto mt-20 flex justify-center items-center flex-wrap gap-16"
+          >
+            {validNfts.map((nft) => (
+              <Card key={nft.image} nft={nft} card={card} />
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
