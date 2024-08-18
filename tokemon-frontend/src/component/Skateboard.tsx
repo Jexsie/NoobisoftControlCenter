@@ -1,10 +1,14 @@
 import skateboard from "../assets/new-board.png";
+import { NftMeta } from "../types";
 
-const Skateboard = ({ name, src }: { name: string; src: string }) => {
+const Skateboard = ({ nft, skate }: { nft: NftMeta; skate: string }) => {
+  const { name, image: src, tags } = nft;
+
+  if (name === "Skateboard") return;
   return (
     <div className=" flex justify-center items-center">
       <div style={{ maxWidth: "428px" }} className="relative">
-        <img src={skateboard} alt="skateboard" className="w-full h-auto" />
+        <img src={skate} alt="skateboard" className="w-full h-auto" />
 
         <div className="absolute top-[40%] left-[18%]">
           <img src={src} alt="Monster" className="w-16 h-auto" />

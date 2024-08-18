@@ -5,12 +5,9 @@ PROTOCOL=https
 
 # Start game1-server
 echo "Starting game1-server"
-cd needfortoken
-./mvnw clean verify
-./mvnw spring-boot:run &
-GAME1_SERVER_PID=$!
-cd ..
-
+./needfortoken/mvnw -f needfortoken/pom.xml clean verify -DskipTests
+./needfortoken/mvnw -f needfortoken/pom.xml spring-boot:run -Dspring-boot.run.workingDirectory=${PWD} &
+GAME1_FRONTEND_PID=$!
 # Start game1-frontend
 echo "Starting game1-frontend"
 cd needfortoken-frontend
@@ -20,12 +17,10 @@ GAME1_FRONTEND_PID=$!
 cd ..
 
 # Start game2-server
-echo "Starting game2-server"
-cd tokemon
-./mvnw clean verify
-./mvnw spring-boot:run &
-GAME2_SERVER_PID=$!
-cd ..
+echo "Starting game2-server" 
+./tokemon/mvnw -f tokemon/pom.xml clean verify -DskipTests
+./tokemon/mvnw -f tokemon/pom.xml spring-boot:run -Dspring-boot.run.workingDirectory=${PWD}  &
+GAME1_FRONTEND_PID=$!
 
 # Start game2-frontend
 echo "Starting game2-frontend"
