@@ -1,10 +1,9 @@
 package com.noobisoftcontrolcenter.tokemon;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.hedera.hashgraph.sdk.Hbar;
+import com.openelements.hedera.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
-import com.openelements.hedera.base.Nft;
-import com.openelements.hedera.base.NftClient;
-import com.openelements.hedera.base.NftRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -53,24 +49,29 @@ public class CardGameEndpoint {
     @Autowired
     private PinataService pinataService;
 
+    @Autowired
+    private AccountClient accountClient;
+
     private static final String[] CID = {
-            "QmWEDxGL5LJs4WTELCNSGjaBqAAa3y7CmM6j4aWqN4Xf2X",
-            "QmT9zHArvAJmV9wj1nQUESJoYZsSaLCuBZuzzgSDa7vscx",
-            "QmQ3Ex2mwmj9VRK8MBPTozeYcNZJ7hQgkB52uwmHc21Nvt",
-            "QmUp3S2izfabxTmUbMtmACdWi55KFkLPbLqYnC5m6tsFyi",
-            // Add more CID here...
-            // "QmWEDxGL5LJs4WTELCNSGjaBqAAa3y7CmM6j4aWqN4Xf2X",
-            // "QmT9zHArvAJmV9wj1nQUESJoYZsSaLCuBZuzzgSDa7vscx",
-            // "QmQ3Ex2mwmj9VRK8MBPTozeYcNZJ7hQgkB52uwmHc21Nvt",
-            // "QmUp3S2izfabxTmUbMtmACdWi55KFkLPbLqYnC5m6tsFyi",
+        "QmYhq5X1PWsqLLDdM5QAMvu1dgPa3PZx7jUEBmGaFT4uHz",
+        "QmYXiT5uDgrwXnaZumSnuzqyDUKdv5k9oaLPT8MxT3GpmP",
+        "QmTJ6AJb1XeKJnA9Qj5vtborshwhgqDwUgA86r12qUiTvK",
+        "Qmcc4x7SFc8miRsbrxBwj7TsbkWCP4S3oeWrqGryxYmeWg",
+        "QmdoFGvEXYhpT5xpvS8ebDZvFw558CRqAHkD67gXUNME26",
+        "QmXsCUBDa8hX5epkQTaKyTcNhQu1rkkV4JT3dCWBQ2txgS",
+        "QmS8AQmxxSrtbrwXXh8R7WJhVAe9aPfaJbr9DtNnUMzjgW",
+        "QmUzmbSX9EzvSgZyzkpPsR7e4FZhssufZHrZzLkKDnoVyM",
+        "QmaGBWgoXAqTqnt2RM3w3sihab9upykXDt6XYzLJEqGMBW",
     };
+
+    private final static String TOKEN_ID = "0.0.4690041";
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
 
-        TokenId cardTokenId = tokenService.createToken("CardToken", "CTKN", 1000);
+        TokenId cardTokenId = TokenId.fromString(TOKEN_ID);
 
         if (tokenAdmin == null) {
             // throw new IllegalStateException("Admin account not found");
@@ -78,17 +79,21 @@ public class CardGameEndpoint {
             tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
         }
 
-        final AccountId accountId = adminBackendService.getHederaAccountForUser(userMail);
+        final AdminBackendService.AccountAndKey accountAndKey = adminBackendService.getHederaAccountForUser(userMail);
+        final AccountId accountId = accountAndKey.accountId();
+        final PrivateKey accountPrivateKey = accountAndKey.privateKey();
         final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
-        List<String> nftMetadata = List.of(CID);
-        // Random random = new Random();
-        // for (int i = 0; i < 4; i++) {
-        //     int index = random.nextInt(CID.length);
-        //     nftMetadata.add(CID[index]);
-        // }
-
         if (nfts.isEmpty()) {
+            nftClient.associateNft(cardTokenId, accountId, accountPrivateKey);
+            List<String> nftMetadata = new ArrayList<>();
+            Random random = new Random();
+
+            for (int i = 0; i < 4; i++) {
+                int index = random.nextInt(CID.length);
+                nftMetadata.add(CID[index]);
+            }
+
             final List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
 
             for (Long serial : serials) {
@@ -100,7 +105,7 @@ public class CardGameEndpoint {
             }
         } else {
             for (Nft nft : nfts) {
-                results.add(Map.of("metadata", new String(nft.metadata())));
+                results.addAll(pinataService.getMetadata(new String(nft.metadata())));
             }
         }
 

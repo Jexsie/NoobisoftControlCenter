@@ -51,9 +51,9 @@ export default function Home() {
               Play Need for Token #NFT
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-              fugiat aliqua.
+              This is the Need for token game where you can gain tokens as nfts
+              and actually own them. All your nfts will appear in different
+              games you play that abide by this game standard
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Link

@@ -1,7 +1,7 @@
 export function setActiveUser(email: string) {
-  return localStorage.setItem("user", email);
+  return sessionStorage.setItem("user", email);
 }
 
 export function getUser() {
-  return localStorage.getItem("user");
+  return sessionStorage.getItem("user");
 }

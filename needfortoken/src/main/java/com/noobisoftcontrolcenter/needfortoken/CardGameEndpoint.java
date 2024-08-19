@@ -54,12 +54,16 @@ public class CardGameEndpoint {
     private PinataService pinataService;
 
     private static final String[] CID = {
-        "QmWEDxGL5LJs4WTELCNSGjaBqAAa3y7CmM6j4aWqN4Xf2X",
-        "QmT9zHArvAJmV9wj1nQUESJoYZsSaLCuBZuzzgSDa7vscx",
-        "QmQ3Ex2mwmj9VRK8MBPTozeYcNZJ7hQgkB52uwmHc21Nvt",
-        "QmUp3S2izfabxTmUbMtmACdWi55KFkLPbLqYnC5m6tsFyi",
-};
-
+        "QmQrnUhTtcLtnvGcSXN8YHfSVtgs3HK4yaLPBgxrDs1x24",
+        "QmWNMqJoTdUivqusfcxcDSnWCyyB5XVw7RKpzy1ys6C7nd",
+        "QmPYDo6bvAQz4Py42r2wBH9e3nPxcUdriNEggt5gv382Du",
+        "QmfDC774hC13zT1Nay8UnxiastUPS3sg27R3MQ4hc4DBD4",
+        "Qmacv7dxuwNV9Gz5nTuvp1tQ1B4orAu5hJ2NSPPhjke1zU",
+        "QmRJRPVXYXS7nL3sRYD8nLDHTPNbVoz6WRNT59NFq5YFgp",
+        "QmYpC89ScqYeavnwWaYyQCsu2RQyNKqKvQ2jDq45WTGe9Z",
+        "QmY6s25MzRDznRd64FD6JBJaoQneqQZy9Sw4rRYjRWfeJD",
+        "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
+    };
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {

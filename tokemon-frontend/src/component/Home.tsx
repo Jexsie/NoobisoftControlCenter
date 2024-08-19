@@ -51,9 +51,9 @@ export default function Home() {
               Play as you earn Tokemon #TKMN
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui
-              lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat
-              fugiat aliqua.
+              This is a tokemon game where you can gain nfts and actually own
+              them. All your nfts will appear in different games you play that
+              abide by this game standard
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <Link
