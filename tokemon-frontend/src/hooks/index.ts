@@ -6,7 +6,7 @@ import { NftMeta } from "../types";
 
 export function useUserNfts(email: string) {
   const { isLoading, isValidating, error, data } = useSWR<Array<NftMeta>>(
-    `${apiUrl}getCardsForUser?userMail=${email}`,
+    `${apiUrl}getStakesForUser?userMail=${email}`,
     dataFetcher
   );
 

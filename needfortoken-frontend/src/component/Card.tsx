@@ -1,7 +1,7 @@
 import { NftMeta } from "../types";
 
 const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
-  const { name, image: src, tags } = nft;
+  const { name, image: src } = nft;
 
   if (name === "card") return;
   return (

@@ -1,18 +1,15 @@
 import Skateboard from "./Skateboard";
 import { useUserNfts } from "../hooks";
 import { getUser } from "../utils";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Skeleton from "./Skeleton";
 import { useNavigate } from "react-router-dom";
+import { skateBaseUrl } from "../constants";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [skate, setSkate] = useState("");
   const { isLoading, nfts } = useUserNfts(getUser());
-  const skateboard = useMemo(
-    () =>
-      nfts.length ? nfts.find((nft) => nft.name === "Skateboard")?.image : null,
-    [nfts]
-  );
 
   const validNfts = useMemo(
     () => nfts.filter((nft) => nft.name !== "card"),
@@ -25,6 +22,32 @@ export default function Dashboard() {
       return navigate("/login");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const getSkate = async () => {
+      const cachedSkate = localStorage.getItem("skateboard");
+
+      if (!cachedSkate) {
+        try {
+          const response = await fetch(skateBaseUrl);
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const dataUrl = reader.result as string;
+            localStorage.setItem("skateboard", dataUrl);
+            setSkate(dataUrl);
+          };
+          reader.readAsDataURL(blob);
+        } catch (error) {
+          console.error(`Failed to fetch image}:`, error);
+        }
+      } else {
+        setSkate(cachedSkate);
+      }
+    };
+
+    getSkate();
+  }, []);
 
   return (
     <div className=" py-24 sm:py-32 h-screen">
@@ -50,7 +73,7 @@ export default function Dashboard() {
             className="mx-auto mt-20 flex justify-center items-center flex-wrap gap-4"
           >
             {validNfts.map((nft) => (
-              <Skateboard key={nft.image} nft={nft} skate={skateboard} />
+              <Skateboard key={nft.image} nft={nft} skate={skate} />
             ))}
           </ul>
         )}

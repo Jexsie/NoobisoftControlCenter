@@ -2,7 +2,6 @@ package com.noobisoftcontrolcenter.tokemon;
 
 import java.util.*;
 
-import com.hedera.hashgraph.sdk.Hbar;
 import com.openelements.hedera.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +20,9 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = "*")
 @RestController
-public class CardGameEndpoint {
+public class SkateBoardEndpoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(CardGameEndpoint.class);
+    private static final Logger logger = LoggerFactory.getLogger(SkateBoardEndpoint.class);
 
     @Value("${spring.hedera.accountId}")
     private String tokenAdminId;
@@ -53,21 +52,21 @@ public class CardGameEndpoint {
     private AccountClient accountClient;
 
     private static final String[] CID = {
-        "QmYhq5X1PWsqLLDdM5QAMvu1dgPa3PZx7jUEBmGaFT4uHz",
-        "QmYXiT5uDgrwXnaZumSnuzqyDUKdv5k9oaLPT8MxT3GpmP",
-        "QmTJ6AJb1XeKJnA9Qj5vtborshwhgqDwUgA86r12qUiTvK",
-        "Qmcc4x7SFc8miRsbrxBwj7TsbkWCP4S3oeWrqGryxYmeWg",
-        "QmdoFGvEXYhpT5xpvS8ebDZvFw558CRqAHkD67gXUNME26",
-        "QmXsCUBDa8hX5epkQTaKyTcNhQu1rkkV4JT3dCWBQ2txgS",
-        "QmS8AQmxxSrtbrwXXh8R7WJhVAe9aPfaJbr9DtNnUMzjgW",
-        "QmUzmbSX9EzvSgZyzkpPsR7e4FZhssufZHrZzLkKDnoVyM",
-        "QmaGBWgoXAqTqnt2RM3w3sihab9upykXDt6XYzLJEqGMBW",
+            "QmYhq5X1PWsqLLDdM5QAMvu1dgPa3PZx7jUEBmGaFT4uHz",
+            "QmYXiT5uDgrwXnaZumSnuzqyDUKdv5k9oaLPT8MxT3GpmP",
+            "QmTJ6AJb1XeKJnA9Qj5vtborshwhgqDwUgA86r12qUiTvK",
+            "Qmcc4x7SFc8miRsbrxBwj7TsbkWCP4S3oeWrqGryxYmeWg",
+            "QmdoFGvEXYhpT5xpvS8ebDZvFw558CRqAHkD67gXUNME26",
+            "QmXsCUBDa8hX5epkQTaKyTcNhQu1rkkV4JT3dCWBQ2txgS",
+            "QmS8AQmxxSrtbrwXXh8R7WJhVAe9aPfaJbr9DtNnUMzjgW",
+            "QmUzmbSX9EzvSgZyzkpPsR7e4FZhssufZHrZzLkKDnoVyM",
+            "QmaGBWgoXAqTqnt2RM3w3sihab9upykXDt6XYzLJEqGMBW",
     };
 
-    private final static String TOKEN_ID = "0.0.4690041";
+    private final static String TOKEN_ID = "0.0.4690282";
 
     @ApiOperation("Get cards for user endpoint")
-    @GetMapping("/getCardsForUser")
+    @GetMapping("/getStakesForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
 

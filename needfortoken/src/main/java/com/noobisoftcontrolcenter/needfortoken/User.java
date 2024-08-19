@@ -10,6 +10,16 @@ public class User {
     private String email;
     private String accountId;
 
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    private String privateKey;
+
     // Getters and Setters
 
     public String getEmail() {

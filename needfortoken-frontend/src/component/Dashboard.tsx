@@ -1,19 +1,15 @@
 import Card from "./Card";
 import { useUserNfts } from "../hooks";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getUser } from "../utils";
 import Skeleton from "./Skeleton";
 import { useNavigate } from "react-router-dom";
+import { cardBaseUrl } from "../constants";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { isLoading, nfts } = useUserNfts(getUser());
-
-  const card = useMemo(
-    () => (nfts.length ? nfts.find((nft) => nft.name === "card").image : null),
-    [nfts]
-  );
-
+  const [card, setCard] = useState("");
   const validNfts = useMemo(
     () => nfts.filter((nft) => nft.name !== "Skateboard"),
     [nfts]
@@ -25,6 +21,32 @@ export default function Dashboard() {
       return navigate("/login");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const getCard = async () => {
+      const cachedSkate = localStorage.getItem("card");
+
+      if (!cachedSkate) {
+        try {
+          const response = await fetch(cardBaseUrl);
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const dataUrl = reader.result as string;
+            localStorage.setItem("card", dataUrl);
+            setCard(dataUrl);
+          };
+          reader.readAsDataURL(blob);
+        } catch (error) {
+          console.error(`Failed to fetch image}:`, error);
+        }
+      } else {
+        setCard(cachedSkate);
+      }
+    };
+
+    getCard();
+  }, []);
 
   return (
     <div className=" py-24 sm:py-32 h-screen">

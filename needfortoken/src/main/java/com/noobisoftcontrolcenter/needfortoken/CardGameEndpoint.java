@@ -1,10 +1,8 @@
 package com.noobisoftcontrolcenter.needfortoken;
+import java.util.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
+import com.hedera.hashgraph.sdk.Hbar;
+import com.openelements.hedera.base.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
-import com.openelements.hedera.base.Nft;
-import com.openelements.hedera.base.NftClient;
-import com.openelements.hedera.base.NftRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -53,35 +48,51 @@ public class CardGameEndpoint {
     @Autowired
     private PinataService pinataService;
 
+    @Autowired
+    private AccountClient accountClient;
+
     private static final String[] CID = {
-        "QmQrnUhTtcLtnvGcSXN8YHfSVtgs3HK4yaLPBgxrDs1x24",
-        "QmWNMqJoTdUivqusfcxcDSnWCyyB5XVw7RKpzy1ys6C7nd",
-        "QmPYDo6bvAQz4Py42r2wBH9e3nPxcUdriNEggt5gv382Du",
-        "QmfDC774hC13zT1Nay8UnxiastUPS3sg27R3MQ4hc4DBD4",
-        "Qmacv7dxuwNV9Gz5nTuvp1tQ1B4orAu5hJ2NSPPhjke1zU",
-        "QmRJRPVXYXS7nL3sRYD8nLDHTPNbVoz6WRNT59NFq5YFgp",
-        "QmYpC89ScqYeavnwWaYyQCsu2RQyNKqKvQ2jDq45WTGe9Z",
-        "QmY6s25MzRDznRd64FD6JBJaoQneqQZy9Sw4rRYjRWfeJD",
-        "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
+            "QmQrnUhTtcLtnvGcSXN8YHfSVtgs3HK4yaLPBgxrDs1x24",
+            "QmWNMqJoTdUivqusfcxcDSnWCyyB5XVw7RKpzy1ys6C7nd",
+            "QmPYDo6bvAQz4Py42r2wBH9e3nPxcUdriNEggt5gv382Du",
+            "QmfDC774hC13zT1Nay8UnxiastUPS3sg27R3MQ4hc4DBD4",
+            "Qmacv7dxuwNV9Gz5nTuvp1tQ1B4orAu5hJ2NSPPhjke1zU",
+            "QmRJRPVXYXS7nL3sRYD8nLDHTPNbVoz6WRNT59NFq5YFgp",
+            "QmYpC89ScqYeavnwWaYyQCsu2RQyNKqKvQ2jDq45WTGe9Z",
+            "QmY6s25MzRDznRd64FD6JBJaoQneqQZy9Sw4rRYjRWfeJD",
+            "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
     };
+
+    private final static String TOKEN_ID = "0.0.4690263";
+
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
 
-        TokenId cardTokenId = tokenService.createToken("CardToken", "CTKN", 1000);
+        TokenId cardTokenId = TokenId.fromString(TOKEN_ID);
 
         if (tokenAdmin == null) {
+            // throw new IllegalStateException("Admin account not found");
             tokenAdmin = AccountId.fromString(tokenAdminId);
             tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
         }
 
-        final AccountId accountId = adminBackendService.getHederaAccountForUser(userMail);
+        final AdminBackendService.AccountAndKey accountAndKey = adminBackendService.getHederaAccountForUser(userMail);
+        final AccountId accountId = accountAndKey.accountId();
+        final PrivateKey accountPrivateKey = accountAndKey.privateKey();
         final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
-        List<String> nftMetadata = List.of(CID);
-
         if (nfts.isEmpty()) {
+            nftClient.associateNft(cardTokenId, accountId, accountPrivateKey);
+            List<String> nftMetadata = new ArrayList<>();
+            Random random = new Random();
+
+            for (int i = 0; i < 4; i++) {
+                int index = random.nextInt(CID.length);
+                nftMetadata.add(CID[index]);
+            }
+
             final List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
 
             for (Long serial : serials) {
@@ -93,7 +104,7 @@ public class CardGameEndpoint {
             }
         } else {
             for (Nft nft : nfts) {
-                results.add(Map.of("metadata", new String(nft.metadata())));
+                results.addAll(pinataService.getMetadata(new String(nft.metadata())));
             }
         }
 

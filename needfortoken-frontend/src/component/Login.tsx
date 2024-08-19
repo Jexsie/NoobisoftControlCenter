@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setActiveUser } from "../utils";
-import { login } from "../api";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -10,16 +9,10 @@ export default function Login() {
   const handleLogin = useCallback(
     async (e) => {
       e.preventDefault();
-      if (!user.email || !user.accountId) return;
+      if (!user.email) return;
 
-      await login(user)
-        .then((res) => {
-          if (res.status === 200) {
-            setActiveUser(user.email);
-            navigate("/dashboard");
-          }
-        })
-        .catch((err) => console.error(err.message));
+      setActiveUser(user.email);
+      navigate("/dashboard");
     },
     [navigate, user]
   );
@@ -54,26 +47,6 @@ export default function Login() {
                 setUser((prev) => ({ ...prev, email: e.target.value }))
               }
               value={user.email}
-              required
-            />
-          </div>
-          <div>
-            <label
-              id="password"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Your account ID
-            </label>
-            <input
-              type="password"
-              name="accountId"
-              id="accountId"
-              placeholder="••••••••"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              onChange={(e) =>
-                setUser((prev) => ({ ...prev, accountId: e.target.value }))
-              }
-              value={user.accountId}
               required
             />
           </div>

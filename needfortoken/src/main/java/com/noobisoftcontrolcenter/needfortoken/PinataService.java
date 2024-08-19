@@ -1,6 +1,7 @@
 package com.noobisoftcontrolcenter.needfortoken;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noobisoftcontrolcenter.needfortoken.MetadataRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -54,4 +55,3 @@ public class PinataService {
         return response.getBody();
     }
 }
-

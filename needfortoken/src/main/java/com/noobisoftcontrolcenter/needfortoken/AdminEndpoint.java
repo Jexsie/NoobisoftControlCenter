@@ -1,7 +1,9 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.needfortoken;
 
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.needfortoken.MetadataRequest;
+import com.noobisoftcontrolcenter.needfortoken.PinataService;
 import com.openelements.hedera.base.Account;
 import com.openelements.hedera.base.AccountClient;
 import com.openelements.hedera.base.NftClient;
@@ -20,9 +22,9 @@ public class AdminEndpoint {
     private AccountClient accountClient;
 
     @ApiOperation("Creates card token type")
-    @GetMapping("/createSkateTokenType")
+    @GetMapping("/createCardTokenType")
     public String createTokenType() throws  Exception {
-        TokenId cardTokenId = nftClient.createNftType("SkateToken", "STKN");
+        TokenId cardTokenId = nftClient.createNftType("CardToken", "CTKN");
         return cardTokenId.toString();
     }
 
