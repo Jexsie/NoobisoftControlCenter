@@ -13,4 +13,4 @@ INSERT INTO users (email, account_id, private_key) VALUES ('user6@example.com', 
 INSERT INTO users (email, account_id, private_key) VALUES ('user7@example.com', '0.0.4690301', '302e020100300506032b657004220420ad4a26a62b4d23d3783946cfceb3aa9073bbbdcaa0a4d150068de2bca428e715');
 INSERT INTO users (email, account_id, private_key) VALUES ('user8@example.com', '0.0.4690303', '302e020100300506032b657004220420b84df58ef8e6f4bc3175902d1e164ae694b856c75cf558da7c500adc4e76aefe');
 INSERT INTO users (email, account_id, private_key) VALUES ('user9@example.com', '0.0.4690304', '302e020100300506032b6570042204200e5e586f94ee6c2bae8b8ab6b37fddef8daf57f731460bf6d05392c83eecd0a5');
-INSERT INTO users (email, account_id, private_key) VALUES ('user2@example.com', '0.0.4690305', '302e020100300506032b657004220420156bb2f0c5a3be746d8af81c937b092b596c5d18b4c5334020091e95fe2c9949');
+INSERT INTO users (email, account_id, private_key) VALUES ('user10@example.com', '0.0.4690305', '302e020100300506032b657004220420156bb2f0c5a3be746d8af81c937b092b596c5d18b4c5334020091e95fe2c9949');

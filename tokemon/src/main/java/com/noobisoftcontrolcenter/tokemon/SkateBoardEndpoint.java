@@ -108,6 +108,24 @@ public class SkateBoardEndpoint {
             }
         }
 
+        for (Nft nft: getSupportedNftsForAccount(accountId)) {
+            results.addAll(pinataService.getMetadata(new String(nft.metadata())));
+        }
+
+        return results;
+    }
+
+    private List<Nft> getSupportedNftsForAccount(AccountId accountId) throws Exception {
+        List<Nft> results = new ArrayList<>();
+        List<Nft> allNfts = nftRepository.findByOwner(accountId);
+
+        for(Nft nft: allNfts) {
+            if (!nft.tokenId().toString().equals(TOKEN_ID)) {
+                List<Map<String, Object>> metadata = pinataService.getMetadata(new String(nft.metadata()));
+
+                results.add(nft);
+            }
+        }
         return results;
     }
 }
