@@ -19,20 +19,19 @@ const Aside = () => {
               <div className="flex-shrink-0 inline-flex items-center justify-center w-14">
                 <FaHouse />
               </div>
-              {/* <div className="text-center text-xs font-normal ">Home</div> */}
             </Link>
 
-            <a href="#" className="text-gray-400 hover:text-red-700">
+            <Link to="/login" className="text-gray-400 hover:text-red-700">
               <div className="flex-shrink-0 inline-flex items-center justify-center w-14">
                 <FaGear />
               </div>
-            </a>
+            </Link>
 
-            <a href="#" className="text-gray-400 hover:text-red-700">
+            <Link to="/login" className="text-gray-400 hover:text-red-700">
               <div className="flex-shrink-0 inline-flex items-center justify-center w-14">
                 <FaArrowRightFromBracket />
               </div>
-            </a>
+            </Link>
           </div>
         </nav>
       </div>

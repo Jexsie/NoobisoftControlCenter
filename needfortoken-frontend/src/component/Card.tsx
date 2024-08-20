@@ -1,7 +1,8 @@
 import { NftMeta } from "../types";
+import { getUser } from "../utils";
 
 const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
-  const { name, image: src } = nft;
+  const { name, image: src, game } = nft;
 
   if (name === "card") return;
   return (
@@ -23,10 +24,16 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
           style={{ right: "25px", top: "25px" }}
           className="absolute flex flex-col items-end text-white"
         >
-          <h2 style={{ fontSize: "40px" }} className="font-bold font-bebas">
+          <h2
+            style={{ fontSize: "12px", marginTop: "-10px" }}
+            className="font-bold font-bebas"
+          >
+            Game: {game}
+          </h2>
+          <h2 style={{ fontSize: "30px" }} className="font-bold font-bebas">
             {name}
           </h2>
-          <p className="text-lg">USER XXX</p>
+          <span className="text-sm">{getUser()}</span>
         </div>
         <div className="absolute left-6 bottom-6 flex justify-center text-white">
           <p
@@ -35,7 +42,7 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
             }}
             className="text-lg font-bold font-bebas text-red-50"
           >
-            #NFT
+            {game.toLocaleLowerCase() === "tokemon" ? "#TKMN" : "#NFT"}
           </p>
         </div>
       </div>

@@ -122,7 +122,6 @@ public class SkateBoardEndpoint {
         for(Nft nft: allNfts) {
             if (!nft.tokenId().toString().equals(TOKEN_ID)) {
                 List<Map<String, Object>> metadata = pinataService.getMetadata(new String(nft.metadata()));
-
                 results.add(nft);
             }
         }
