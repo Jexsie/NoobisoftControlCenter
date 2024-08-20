@@ -20,8 +20,7 @@ At NOOBISOFT CONTROL CENTER we seamlessly share NFTs between games - Unlock the 
 
 - ### Key Features:
   - Upon login, users can view all their owned cards.
-  - New users receive 3 starter cards on their first login.
-  - Cards consist of a title, border, image, and descriptive text.
+  - New users receive 4 starter cards on their first login.
   - The game interface displays the user's entire card collection.
 
 * ### Game 2: Skateboard Game(Tokemon)
