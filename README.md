@@ -32,16 +32,6 @@ At NOOBISOFT CONTROL CENTER we seamlessly share NFTs between games - Unlock the 
   - New users receive random 4 skateboards when they log in for the first time.
   - The game interface displays the username and a list of available skateboards.
 
-## Cross-Game NFT Interaction
-
-**From Game 1 to Game 2**:
-
-- Each card owned by the user in Game 1 unlocks a custom skateboard in Game 2 featuring the card’s design.
-
-**From Game 2 to Game 1**:
-
-- Each skateboard owned in Game 2 grants the user a custom "Skate Attack" card in Game 1, with the skateboard's image on the card.
-
 ## Technology Stack
 
 - **Backend**: Java Spring Boot for server-side logic
