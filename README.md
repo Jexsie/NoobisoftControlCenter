@@ -29,7 +29,7 @@ At NOOBISOFT CONTROL CENTER we seamlessly share NFTs between games - Unlock the 
 
 - ### Key Features:
   - Players collect custom skateboards, each with unique images, though all share the same shape.
-  - New users receive a random skateboard when they log in for the first time.
+  - New users receive random 4 skateboards when they log in for the first time.
   - The game interface displays the username and a list of available skateboards.
 
 ## Cross-Game NFT Interaction
