@@ -83,6 +83,19 @@ This script will:
 
 - **Start game2-frontend**: Installs necessary dependencies and runs the tokemon-frontend React application in development mode on `port 3002`.
 
+### Application Users
+
+You can login in both games using any of the User mails stored in the database
+
+- user1@example.com
+- user2@example.com
+- user3@example.com
+- user4@example.com
+- user5@example.com
+- user6@example.com
+- user7@example.com
+- user8@example.com
+
 ### Terminating the Application
 
 The script will automatically handle server termination upon receiving a SIGINT or
