@@ -1,4 +1,4 @@
-# NOOBISOFT CONTROL CENTER
+# NFTs4Games
 
 ### Project Description
 
@@ -10,7 +10,7 @@ https://dev.to/hendrikebbers/gaming-web3-how-an-open-and-secure-future-of-owners
 
 ## NFT Integration Across Multiple Games
 
-At NOOBISOFT CONTROL CENTER we seamlessly share NFTs between games - Unlock the power of NFT interoperability within your gaming experience, where NFTs created in one game can be utilized across other games in the ecosystem.
+At NFTs4Games we seamlessly share NFTs between games - Unlock the power of NFT interoperability within your gaming experience, where NFTs created in one game can be utilized across other games in the ecosystem.
 
 ## Game Details
 
@@ -65,6 +65,7 @@ To start the application, follow these steps:
         spring.hedera.network.name=testnet
         pinata.api.key=xxxxxxxxxxxxxxxxxxxxxx
         pinata.api.secret=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 3.  #### Make the script executable:
 
         chmod +x start_servers.sh
