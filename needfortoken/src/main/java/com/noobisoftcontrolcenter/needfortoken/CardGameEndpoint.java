@@ -63,7 +63,7 @@ public class CardGameEndpoint {
             "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
     };
 
-    private final static String TOKEN_ID = "0.0.4690263";
+    private final static String TOKEN_ID = "0.0.4700136";
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getCardsForUser")

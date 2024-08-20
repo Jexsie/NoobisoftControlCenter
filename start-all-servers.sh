@@ -30,22 +30,6 @@ npm run dev &
 GAME2_FRONTEND_PID=$!
 cd ..
 
-# Start general-server
-echo "Starting general-server"
-cd Noobisoft-server
-./mvnw clean verify
-./mvnw spring-boot:run &
-GENERAL_SERVER_PID=$!
-cd ..
-
-# Start general-frontend
-echo "Starting general-frontend"
-cd noobisoft-frontend
-npm install
-npm run dev &
-GENERAL_FRONTEND_PID=$!
-cd ..
-
 # Function to terminate all running servers
 terminate_servers() {
   echo "Terminating all servers..."

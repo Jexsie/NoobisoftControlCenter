@@ -63,7 +63,7 @@ public class SkateBoardEndpoint {
             "QmaGBWgoXAqTqnt2RM3w3sihab9upykXDt6XYzLJEqGMBW",
     };
 
-    private final static String TOKEN_ID = "0.0.4690282";
+    private final static String TOKEN_ID = "0.0.4700136";
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getStakesForUser")
