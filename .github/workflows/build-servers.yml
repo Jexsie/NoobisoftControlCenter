@@ -43,6 +43,10 @@ jobs:
           ./mvnw clean verify
           cd ..
 
+      - name: Build Docker Image for Game1 Server
+        run: |
+          docker build -t needfortoken-backend -f needfortoken/Dockerfile .
+
       - name: Build Game1 Frontend
         run: |
           cd needfortoken-frontend
