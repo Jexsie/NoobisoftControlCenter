@@ -20,7 +20,7 @@ COPY --from=builder /app/target/*.jar app.jar
 # ENV PINATA_API_KEY=${PINATA_API_KEY}
 # ENV PINATA_API_SECRET=${PINATA_API_SECRET}
 
-#EXPOSE 8000
+EXPOSE 8070
 
 # Run the application
 CMD ["java", "-jar", "app.jar"]
