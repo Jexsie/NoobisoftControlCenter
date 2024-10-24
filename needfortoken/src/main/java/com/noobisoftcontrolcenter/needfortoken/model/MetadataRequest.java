@@ -1,10 +1,10 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.needfortoken.model;
 
 import java.util.List;
 
 public class MetadataRequest {
     private String filename;
-    private List<Metadata> metadata;
+    private List<com.noobisoftcontrolcenter.needfortoken.model.Metadata> metadata;
 
     // Getters and Setters
     public String getFilename() {
@@ -15,7 +15,7 @@ public class MetadataRequest {
         this.filename = filename;
     }
 
-    public List<Metadata> getMetadata() {
+    public List<com.noobisoftcontrolcenter.needfortoken.model.Metadata> getMetadata() {
         return metadata;
     }
 

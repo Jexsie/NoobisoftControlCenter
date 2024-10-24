@@ -1,18 +1,21 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.needfortoken.controller;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.needfortoken.model.MetadataRequest;
+import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
 import com.openelements.hedera.base.*;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -25,10 +28,10 @@ public class AdminEndpoint {
     private AccountClient accountClient;
 
     @Value("${spring.hedera.accountId}")
-    private String tokenAdminId;
+    public String tokenAdminId;
 
     @Value("${spring.hedera.privateKey}")
-    private String tokenAdminKey;
+    public String tokenAdminKey;
 
     private AccountId tokenAdmin;
     private PrivateKey tokenAdminPrivateKey;
@@ -40,15 +43,15 @@ public class AdminEndpoint {
     private PinataService pinataService;
 
 
+
     @ApiOperation("Creates card token type")
-    @GetMapping("/createSkateTokenType")
+    @GetMapping("/createCardTokenType")
     public String createTokenType() throws  Exception {
-        TokenId cardTokenId = nftClient.createNftType("SkateToken", "STKN");
+        TokenId cardTokenId = nftClient.createNftType("CardToken", "CTKN");
         return cardTokenId.toString();
     }
 
     private static final Logger logger = LoggerFactory.getLogger(AdminEndpoint.class);
-
 
     public record AccountAndKeyData(String accountId, String privateKey) {
     }
@@ -59,6 +62,9 @@ public class AdminEndpoint {
         return new AccountAndKeyData(account.accountId().toString(), account.privateKey().toString());
     }
 
+
+
+
     @PostMapping("/pinJson")
     public String pinJson(@RequestBody MetadataRequest metadataRequest) {
         try {
@@ -68,7 +74,6 @@ public class AdminEndpoint {
             return "Failed to pin JSON to IPFS: " + e.getMessage();
         }
     }
-
     @ApiOperation("Clear account NFTs by transferring them to the admin")
     @GetMapping("/clearAccountNfts")
     public String clearAccountNfts(@RequestParam String addressId) throws Exception {

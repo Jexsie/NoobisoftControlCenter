@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.tokemon.model;
 
 import java.util.List;
 
@@ -50,3 +50,4 @@ public class Metadata {
         this.tags = tags;
     }
 }
+

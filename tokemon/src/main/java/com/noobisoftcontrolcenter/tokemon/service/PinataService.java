@@ -1,6 +1,7 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.tokemon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.noobisoftcontrolcenter.tokemon.model.MetadataRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

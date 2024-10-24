@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.tokemon.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
