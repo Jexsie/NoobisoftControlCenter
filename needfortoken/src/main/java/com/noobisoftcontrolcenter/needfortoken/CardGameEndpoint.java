@@ -66,6 +66,7 @@ public class CardGameEndpoint {
     private final static String TOKEN_ID = "0.0.4700136";
 
     @ApiOperation("Get cards for user endpoint")
+    @CrossOrigin
     @GetMapping("/getCardsForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
