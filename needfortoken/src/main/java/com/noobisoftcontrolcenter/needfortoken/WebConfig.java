@@ -13,8 +13,9 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "https://needfortoken-frontend-open-elements-58d77c8e.koyeb.app/")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedOrigins("*")
+                        .allowedMethods("*")
+                        .allowCredentials(true)
                         .allowedHeaders("*");
             }
         };
