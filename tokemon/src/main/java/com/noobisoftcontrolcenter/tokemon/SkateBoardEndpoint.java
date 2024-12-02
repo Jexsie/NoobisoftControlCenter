@@ -18,7 +18,7 @@ import com.hedera.hashgraph.sdk.TokenId;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = "https://tokemon-open-elements-8c32716c.koyeb.app/")
+@CrossOrigin(origins = "*")
 @RestController
 public class SkateBoardEndpoint {
 
