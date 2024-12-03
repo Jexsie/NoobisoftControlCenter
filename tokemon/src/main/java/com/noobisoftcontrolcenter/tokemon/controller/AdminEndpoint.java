@@ -1,9 +1,11 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.tokemon.controller;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.tokemon.model.MetadataRequest;
+import com.noobisoftcontrolcenter.tokemon.service.PinataService;
 import com.openelements.hedera.base.*;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

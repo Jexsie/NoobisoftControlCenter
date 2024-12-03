@@ -1,7 +1,9 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.tokemon.service;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
+import com.noobisoftcontrolcenter.tokemon.model.User;
+import com.noobisoftcontrolcenter.tokemon.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

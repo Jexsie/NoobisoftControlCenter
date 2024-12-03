@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.tokemon.model;
 
 import java.util.List;
 
