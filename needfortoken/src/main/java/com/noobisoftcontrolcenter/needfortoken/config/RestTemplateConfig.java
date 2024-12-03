@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

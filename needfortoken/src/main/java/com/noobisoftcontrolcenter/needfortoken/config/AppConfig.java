@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;

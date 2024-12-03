@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.service;
 
 import com.hedera.hashgraph.sdk.*;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,9 +1,11 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.controller;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.needfortoken.model.MetadataRequest;
+import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
 import com.openelements.hedera.base.*;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -59,9 +61,6 @@ public class AdminEndpoint {
         final Account account = accountClient.createAccount(Hbar.ZERO);
         return new AccountAndKeyData(account.accountId().toString(), account.privateKey().toString());
     }
-
-
-
 
     @PostMapping("/pinJson")
     public String pinJson(@RequestBody MetadataRequest metadataRequest) {
