@@ -1,10 +1,16 @@
 package com.noobisoftcontrolcenter.needfortoken.controller;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import com.noobisoftcontrolcenter.needfortoken.service.AdminBackendService;
 import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
 import com.noobisoftcontrolcenter.needfortoken.service.TokenService;
-import com.openelements.hedera.base.*;
+import com.openelements.hedera.base.NftRepository;
+import com.openelements.hedera.base.NftClient;
+import com.openelements.hedera.base.AccountClient;
+import com.openelements.hedera.base.Nft;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +109,7 @@ public class CardGameEndpoint {
             }
 
             for (String ipfsHash : nftMetadata) {
-                results.addAll((Collection<? extends Map<String, Object>>) pinataService.getMetadata(ipfsHash));
+                results.addAll(pinataService.getMetadata(ipfsHash));
             }
         } else {
             for (Nft nft : nfts) {

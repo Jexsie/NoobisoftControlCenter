@@ -1,11 +1,17 @@
 package com.noobisoftcontrolcenter.tokemon.controller;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.ArrayList;
 
 import com.noobisoftcontrolcenter.tokemon.service.AdminBackendService;
 import com.noobisoftcontrolcenter.tokemon.service.PinataService;
 import com.noobisoftcontrolcenter.tokemon.service.TokenService;
-import com.openelements.hedera.base.*;
+import com.openelements.hedera.base.NftRepository;
+import com.openelements.hedera.base.NftClient;
+import com.openelements.hedera.base.Nft;
+import com.openelements.hedera.base.AccountClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +109,7 @@ public class SkateBoardEndpoint {
             }
 
             for (String ipfsHash : nftMetadata) {
-                results.addAll((Collection<? extends Map<String, Object>>) pinataService.getMetadata(ipfsHash));
+                results.addAll(pinataService.getMetadata(ipfsHash));
             }
         } else {
             for (Nft nft : nfts) {
