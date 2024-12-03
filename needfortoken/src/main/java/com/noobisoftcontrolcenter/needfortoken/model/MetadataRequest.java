@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.tokemon;
+package com.noobisoftcontrolcenter.needfortoken.model;
 
 import java.util.List;
 

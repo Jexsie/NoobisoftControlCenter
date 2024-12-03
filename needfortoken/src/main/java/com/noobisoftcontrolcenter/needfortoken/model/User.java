@@ -1,4 +1,4 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.model;
 
 import jakarta.persistence.*;
 

@@ -1,7 +1,9 @@
-package com.noobisoftcontrolcenter.needfortoken;
+package com.noobisoftcontrolcenter.needfortoken.service;
 
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
+import com.noobisoftcontrolcenter.needfortoken.model.User;
+import com.noobisoftcontrolcenter.needfortoken.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
