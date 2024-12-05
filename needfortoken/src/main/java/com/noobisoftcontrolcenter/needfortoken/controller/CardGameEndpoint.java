@@ -60,14 +60,14 @@ public class CardGameEndpoint {
     private AccountClient accountClient;
 
     private static final String[] CID = {
-            "QmQrnUhTtcLtnvGcSXN8YHfSVtgs3HK4yaLPBgxrDs1x24",
-            "QmWNMqJoTdUivqusfcxcDSnWCyyB5XVw7RKpzy1ys6C7nd",
-            "QmPYDo6bvAQz4Py42r2wBH9e3nPxcUdriNEggt5gv382Du",
-            "QmfDC774hC13zT1Nay8UnxiastUPS3sg27R3MQ4hc4DBD4",
-            "Qmacv7dxuwNV9Gz5nTuvp1tQ1B4orAu5hJ2NSPPhjke1zU",
-            "QmRJRPVXYXS7nL3sRYD8nLDHTPNbVoz6WRNT59NFq5YFgp",
-            "QmYpC89ScqYeavnwWaYyQCsu2RQyNKqKvQ2jDq45WTGe9Z",
-            "QmY6s25MzRDznRd64FD6JBJaoQneqQZy9Sw4rRYjRWfeJD",
+            "QmRGHv17TkToCWhKSiW7SkyYvJ4TbXX8ib59tMjAtGpCWM",
+            "QmPasPVE2p5CLejL4MSNRFJdvNQddjChLfJFDmy7NbCaf8",
+            "QmYsEQAwLGu4UPgVJt3kdoibtsC1tpyZenBaeEZMKBgmfD",
+            "Qmbe4DPkTM4X2mRts3Xyy7YxfFUg76BgjRqq6jTA2QHn39",
+            "QmZytyteD2u9QrVpBzDUnoDqHFDhB4zb59XZke5rUwm4kW",
+            "QmVbfAzkJouNtWxUA4nr1bxzwmiw4GmgHLWMspLBLyUw9h",
+            "QmTZkGdc29MSUP8eXynipEWtdG6qK6BwzwRRFSz6r6dXpB",
+            "QmQuPJv6GsNq8q9Zs4rimT1ZTbpTEtiWjDALw8w3c5wDBu",
             "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
     };
 
