@@ -32,7 +32,7 @@ public class PinataService {
     }
 
     public List<Map<String, Object>> getMetadata(String ipfsHash) {
-        String url = "https://ivory-perfect-mosquito-293.mypinata.cloud/ipfs/" + ipfsHash;
+        String url = "https://ipfs.io/ipfs/" + ipfsHash;
         return restTemplate.getForObject(url, List.class);
     }
 

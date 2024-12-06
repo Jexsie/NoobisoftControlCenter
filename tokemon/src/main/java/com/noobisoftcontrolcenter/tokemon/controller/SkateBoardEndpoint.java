@@ -61,18 +61,18 @@ public class SkateBoardEndpoint {
     private AccountClient accountClient;
 
     private static final String[] CID = {
-            "QmYhq5X1PWsqLLDdM5QAMvu1dgPa3PZx7jUEBmGaFT4uHz",
-            "QmYXiT5uDgrwXnaZumSnuzqyDUKdv5k9oaLPT8MxT3GpmP",
-            "QmTJ6AJb1XeKJnA9Qj5vtborshwhgqDwUgA86r12qUiTvK",
-            "Qmcc4x7SFc8miRsbrxBwj7TsbkWCP4S3oeWrqGryxYmeWg",
-            "QmdoFGvEXYhpT5xpvS8ebDZvFw558CRqAHkD67gXUNME26",
-            "QmXsCUBDa8hX5epkQTaKyTcNhQu1rkkV4JT3dCWBQ2txgS",
-            "QmS8AQmxxSrtbrwXXh8R7WJhVAe9aPfaJbr9DtNnUMzjgW",
-            "QmUzmbSX9EzvSgZyzkpPsR7e4FZhssufZHrZzLkKDnoVyM",
-            "QmaGBWgoXAqTqnt2RM3w3sihab9upykXDt6XYzLJEqGMBW",
+            "QmV7R7dtVhxmY3YdiuU2oyfmR2QdTTzdwVxNsJgAS5h4DP",
+            "QmWr32ZybFgSeAGDz5MeBHDgH4qwPygKWUw5C7Je6aas3p",
+            "QmUDH2QYqgRyC2UnCFBmAYuRnT72ts75ArA9oBFE5SkmM1",
+            "QmWUZ2kksfhGoqCSyM3vMSJdK6sk9buPmqTGbTLHc9w8cE",
+            "QmZQNbwYdkm2eF4Qvc9b4F3Ybmby4XqwzjDQomXfm5L1kE",
+            "QmdJGnG1AZeHmYCJjjFng89GecVmuUtQWz48K3gBmTJDDg",
+            "QmbiZ2BE52EFJ6t7g2yWq7d4SeDbigN5U4qmGjK1HvrQuk",
+            "QmUPxrV868LoUq2BdFxXnAC9tvo95efY9wiomrYPgVg5AU",
+            "QmdN7hZ2UiBXPMmHogJVeWSGBP4XGrok8zWZ37dMWpJvT1"
     };
 
-    private final static String TOKEN_ID = "0.0.4700136";
+    private final static String TOKEN_ID = "0.0.5219756";
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getStakesForUser")
