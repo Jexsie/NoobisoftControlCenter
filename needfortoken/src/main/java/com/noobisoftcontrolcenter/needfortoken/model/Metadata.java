@@ -11,7 +11,6 @@ public class Metadata {
     private List<File> files;
     private Localization localization;
 
-    // Inner classes for nested objects
     public static class Properties {
         private String game;
 
@@ -84,7 +83,6 @@ public class Metadata {
         }
     }
 
-    // Getters and Setters for Metadata class
     public String getName() {
         return name;
     }
