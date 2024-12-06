@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import Login from "./Login";
+import { useState } from "react";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="bg-gray-900">
       <div className="relative isolate overflow-hidden">
@@ -56,12 +58,12 @@ export default function Home() {
               abide by this game standard
             </p>
             <div className="mt-10 flex items-center gap-x-6">
-              <Link
-                to="/login"
+              <button
+                onClick={() => setIsOpen(true)}
                 className="rounded-md bg-indigo-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-400"
               >
                 Get started
-              </Link>
+              </button>
               <a
                 href="#"
                 className="text-sm font-semibold leading-6 text-white"
@@ -72,6 +74,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Login isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }

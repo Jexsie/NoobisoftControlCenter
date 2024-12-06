@@ -2,7 +2,11 @@ import { NftMeta } from "../types";
 import { getUser } from "../utils";
 
 const Skateboard = ({ nft, skate }: { nft: NftMeta; skate: string }) => {
-  const { name, image: src, game } = nft;
+  const {
+    name,
+    image: src,
+    properties: { game },
+  } = nft;
 
   if (name === "Skateboard") return;
   return (

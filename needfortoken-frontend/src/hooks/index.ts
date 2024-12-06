@@ -21,7 +21,7 @@ export function useUserNfts(email: string) {
             if (!storedImage) {
               try {
                 const response = await fetch(
-                  `https://ivory-perfect-mosquito-293.mypinata.cloud/ipfs/${nft.image}`
+                  `https://ipfs.io/ipfs/${nft.image.split('ipfs://')[1]}`
                 );
                 const blob = await response.blob();
                 const reader = new FileReader();

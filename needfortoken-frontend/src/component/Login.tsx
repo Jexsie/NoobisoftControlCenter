@@ -1,63 +1,103 @@
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  HashConnect,
+  HashConnectConnectionState,
+  SessionData,
+} from "hashconnect";
+import { LedgerId } from "@hashgraph/sdk";
 import { setActiveUser } from "../utils";
 
-export default function Login() {
+const appMetadata = {
+  name: "Tokemon",
+  description: "This is the a tokemon game",
+  icons: [
+    "https://needfortoken-frontend-open-elements-58d77c8e.koyeb.app/favicon.ico",
+  ],
+  url: "https://needfortoken-frontend-open-elements-58d77c8e.koyeb.app/",
+};
+
+export default function Login({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
-  const [user, setUser] = useState({ email: "", accountId: "" });
+  const [status, setStatus] = useState(HashConnectConnectionState.Disconnected);
 
-  const handleLogin = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (!user.email) return;
+  const projectId = "8140cdc45c6cb9f9c91446d407554b15";
+  let hc: HashConnect;
+  const [pairingData, setPairingData] = useState<SessionData | null>(null);
 
-      setActiveUser(user.email);
+  console.log(pairingData, "pairing data");
+  console.log(status, "status");
+
+  async function init() {
+    //create the hashconnect instance
+    const hashconnect = new HashConnect(
+      LedgerId.TESTNET,
+      projectId,
+      appMetadata,
+      true
+    );
+    hc = hashconnect;
+
+    if (hc && isOpen) {
+      //register events
+      hc.pairingEvent.on((newPairing) => {
+        setPairingData(newPairing);
+      });
+
+      hc.disconnectionEvent.on(() => {
+        setPairingData(null);
+      });
+
+      hc.connectionStatusChangeEvent.on((connectionStatus) => {
+        setStatus(connectionStatus);
+      });
+
+      //initialize
+      await hc.init();
+
+      //open pairing modal
+      hc.openPairingModal();
+    }
+  }
+
+  useEffect(() => {
+    if (status === HashConnectConnectionState.Paired) {
+      setActiveUser(pairingData.accountIds[0]);
       navigate("/dashboard");
-    },
-    [navigate, user]
-  );
+      setIsOpen(false);
+    }
+  }, [navigate, pairingData?.accountIds, setIsOpen, status]);
+
+  // const disconnect = useCallback(() => {
+  //   hc.disconnect();
+  // }, [hc]);
+
+  if (!isOpen) return null;
 
   return (
     <div
-      className="w-full h-screen flex justify-center items-center"
-      style={{ backdropFilter: "blur(25px)" }}
+      className="z-50 min-w-[100vw] h-screen fixed top-0 flex justify-center items-center"
+      style={{ backdropFilter: "blur(2px)" }}
     >
       <div
-        style={{ height: "60vh" }}
-        className="w-full max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8"
+        style={{ height: "40vh" }}
+        className="bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8"
       >
-        <form className="space-y-6" onSubmit={handleLogin}>
+        <div className="space-y-6">
+          <button onClick={() => setIsOpen(false)} className="text-red-600">
+            Close
+          </button>
           <h5 className="text-xl font-medium text-gray-900">
             Sign in to our platform
           </h5>
-          <div>
-            <label
-              id="email"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Your email
-            </label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="name@company.com"
-              onChange={(e) =>
-                setUser((prev) => ({ ...prev, email: e.target.value }))
-              }
-              value={user.email}
-              required
-            />
-          </div>
-
+          <p>Connect your wallet to get started.</p>
           <button
-            type="submit"
+            onClick={init}
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Login / Create account
+            Connect wallet
           </button>
-        </form>
+        </div>
       </div>
     </div>
   );

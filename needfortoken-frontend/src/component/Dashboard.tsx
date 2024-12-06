@@ -18,7 +18,7 @@ export default function Dashboard() {
   useEffect(() => {
     const activeUser = getUser();
     if (!activeUser) {
-      return navigate("/login");
+      return navigate("/");
     }
   }, [navigate]);
 
@@ -55,6 +55,16 @@ export default function Dashboard() {
           <h2 className="text-3xl font-bold tracking-tight text-black sm:text-4xl">
             TOKEMON #TKMN
           </h2>
+          <span
+            style={{
+              padding: "5px",
+              background: "green",
+              borderRadius: "5px",
+              color: "white",
+            }}
+          >
+            {getUser()}
+          </span>
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Welcome to Tokemon. If you are new, you will be provided with three
             NFTs to enjoy the game. These tokens can be used accross different
