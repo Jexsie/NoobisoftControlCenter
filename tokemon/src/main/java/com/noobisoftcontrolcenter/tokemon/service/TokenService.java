@@ -29,7 +29,6 @@ public class TokenService {
                 .setTreasuryAccountId(AccountId.fromString(operatorId))
                 .setInitialSupply(initialSupply)
                 .setAdminKey(PrivateKey.fromString(operatorKey).getPublicKey())
-                //.setTokenType(TokenType.NON_FUNGIBLE_UNIQUE)
                 .setSupplyKey(PrivateKey.fromString(operatorKey).getPublicKey())
                 .execute(client);
 
