@@ -2,14 +2,15 @@ import { NftMeta } from "../types";
 import { getUser } from "../utils";
 
 const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
-  const { name, image: src, game } = nft;
+  const {
+    name,
+    image: src,
+    properties: { game },
+  } = nft;
 
   if (name === "card") return;
   return (
-    <div
-      // style={{ height: "100vh", width: "100vw" }}
-      className=" flex justify-center items-center"
-    >
+    <div className=" flex justify-center items-center">
       <div
         style={{ width: "300px" }}
         className=" relative flex justify-center items-center"

@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   HashConnect,
   HashConnectConnectionState,
   SessionData,
 } from "hashconnect";
-import { LedgerId } from "@hashgraph/sdk";
+import {
+  AccountId,
+  LedgerId,
+  TokenAssociateTransaction,
+  TokenId,
+} from "@hashgraph/sdk";
 import { setActiveUser } from "../utils";
 
 const appMetadata = {
@@ -19,58 +23,70 @@ const appMetadata = {
 
 export default function Login({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
-  const [status, setStatus] = useState(HashConnectConnectionState.Disconnected);
 
   const projectId = "8140cdc45c6cb9f9c91446d407554b15";
-  let hc: HashConnect;
-  const [pairingData, setPairingData] = useState<SessionData | null>(null);
+  const tokenId = "0.0.5219756";
 
-  console.log(pairingData, "pairing data");
-  console.log(status, "status");
+  let hashconnect: HashConnect;
+  let state: HashConnectConnectionState =
+    HashConnectConnectionState.Disconnected;
+  let pairingData: SessionData;
 
   async function init() {
     //create the hashconnect instance
-    const hashconnect = new HashConnect(
+    hashconnect = new HashConnect(
       LedgerId.TESTNET,
       projectId,
       appMetadata,
       true
     );
-    hc = hashconnect;
 
-    if (hc && isOpen) {
-      //register events
-      hc.pairingEvent.on((newPairing) => {
-        setPairingData(newPairing);
-      });
+    //register events
+    setUpHashConnectEvents();
 
-      hc.disconnectionEvent.on(() => {
-        setPairingData(null);
-      });
+    //initialize
+    await hashconnect.init();
 
-      hc.connectionStatusChangeEvent.on((connectionStatus) => {
-        setStatus(connectionStatus);
-      });
-
-      //initialize
-      await hc.init();
-
-      //open pairing modal
-      hc.openPairingModal();
-    }
+    //open pairing modal
+    hashconnect.openPairingModal();
+    await associateTx();
+    setActiveUser(pairingData.accountIds[0]);
   }
 
-  useEffect(() => {
-    if (status === HashConnectConnectionState.Paired) {
-      setActiveUser(pairingData.accountIds[0]);
-      navigate("/dashboard");
-      setIsOpen(false);
-    }
-  }, [navigate, pairingData?.accountIds, setIsOpen, status]);
+  function setUpHashConnectEvents() {
+    hashconnect.pairingEvent.on((newPairing) => {
+      pairingData = newPairing;
+    });
 
-  // const disconnect = useCallback(() => {
-  //   hc.disconnect();
-  // }, [hc]);
+    hashconnect.disconnectionEvent.on(() => {
+      pairingData = null;
+    });
+
+    hashconnect.connectionStatusChangeEvent.on((connectionStatus) => {
+      state = connectionStatus;
+    });
+  }
+
+  const associateTx = async () => {
+    try {
+      const signer = hashconnect.getSigner(
+        AccountId.fromString(pairingData?.accountIds[0])
+      );
+      const transaction = new TokenAssociateTransaction()
+        .setAccountId(AccountId.fromString(pairingData?.accountIds[0]))
+        .setTokenIds([TokenId.fromString(tokenId)])
+        .freezeWithSigner(signer);
+
+      const response = (await transaction).executeWithSigner(signer);
+
+      if ((await response).toString()) {
+        console.log(response, "asociation promise");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error in association transaction:", error);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -83,6 +99,7 @@ export default function Login({ isOpen, setIsOpen }) {
         style={{ height: "40vh" }}
         className="bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8"
       >
+        {state}
         <div className="space-y-6">
           <button onClick={() => setIsOpen(false)} className="text-red-600">
             Close
@@ -96,6 +113,12 @@ export default function Login({ isOpen, setIsOpen }) {
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Connect wallet
+          </button>
+          <button
+            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={associateTx}
+          >
+            Associate
           </button>
         </div>
       </div>
