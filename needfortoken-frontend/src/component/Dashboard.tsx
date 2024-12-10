@@ -81,8 +81,8 @@ export default function Dashboard() {
             role="list"
             className="mx-auto mt-20 flex justify-center items-center flex-wrap gap-16"
           >
-            {validNfts.map((nft) => (
-              <Card key={nft.image} nft={nft} card={card} />
+            {validNfts.map((nft, index) => (
+              <Card key={index} nft={nft} card={card} />
             ))}
           </ul>
         )}

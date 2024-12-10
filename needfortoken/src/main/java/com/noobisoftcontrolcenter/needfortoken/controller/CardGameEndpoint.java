@@ -4,15 +4,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.noobisoftcontrolcenter.needfortoken.service.AdminBackendService;
 import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
-import com.noobisoftcontrolcenter.needfortoken.service.TokenService;
 import com.openelements.hedera.base.NftRepository;
 import com.openelements.hedera.base.NftClient;
-import com.openelements.hedera.base.AccountClient;
 import com.openelements.hedera.base.Nft;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +25,6 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class CardGameEndpoint {
 
-    private static final Logger logger = LoggerFactory.getLogger(CardGameEndpoint.class);
 
     @Value("${spring.hedera.accountId}")
     private String tokenAdminId;
@@ -47,17 +41,9 @@ public class CardGameEndpoint {
     @Autowired
     private NftClient nftClient;
 
-    @Autowired
-    private AdminBackendService adminBackendService;
-
-    @Autowired
-    private TokenService tokenService;
 
     @Autowired
     private PinataService pinataService;
-
-    @Autowired
-    private AccountClient accountClient;
 
     private static final String[] CID = {
             "QmRGHv17TkToCWhKSiW7SkyYvJ4TbXX8ib59tMjAtGpCWM",
@@ -76,10 +62,11 @@ public class CardGameEndpoint {
     @ApiOperation("Get cards for user endpoint")
     @CrossOrigin
     @GetMapping("/getCardsForUser")
-    public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
+    public List<Map<String, Object>> getCardsForUser(@RequestParam String userAccountId) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
 
         TokenId cardTokenId = TokenId.fromString(TOKEN_ID);
+        AccountId accountId = AccountId.fromString(userAccountId);
 
         if (tokenAdmin == null) {
             // throw new IllegalStateException("Admin account not found");
@@ -87,13 +74,10 @@ public class CardGameEndpoint {
             tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
         }
 
-        final AdminBackendService.AccountAndKey accountAndKey = adminBackendService.getHederaAccountForUser(userMail);
-        final AccountId accountId = accountAndKey.accountId();
-        final PrivateKey accountPrivateKey = accountAndKey.privateKey();
+
         final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
         if (nfts.isEmpty()) {
-            nftClient.associateNft(cardTokenId, accountId, accountPrivateKey);
             List<String> nftMetadata = new ArrayList<>();
             Random random = new Random();
 
@@ -130,8 +114,6 @@ public class CardGameEndpoint {
 
         for(Nft nft: allNfts) {
             if (!nft.tokenId().toString().equals(TOKEN_ID)) {
-                List<Map<String, Object>> metadata = pinataService.getMetadata(new String(nft.metadata()));
-
                 results.add(nft);
             }
         }
