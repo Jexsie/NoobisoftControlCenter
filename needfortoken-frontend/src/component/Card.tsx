@@ -1,5 +1,5 @@
-import { NftMeta } from "../types";
-import { getUser } from "../utils";
+// import { NftMeta } from "../types";
+// import { getUser } from "../utils";
 
 const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
   const {
@@ -51,4 +51,4 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
   );
 };
 
-export default Card;
+// export default Card;
