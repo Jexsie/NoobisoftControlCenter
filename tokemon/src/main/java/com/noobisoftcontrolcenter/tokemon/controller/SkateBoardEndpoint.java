@@ -5,13 +5,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.ArrayList;
 
-import com.noobisoftcontrolcenter.tokemon.service.AdminBackendService;
 import com.noobisoftcontrolcenter.tokemon.service.PinataService;
-import com.noobisoftcontrolcenter.tokemon.service.TokenService;
 import com.openelements.hedera.base.NftRepository;
 import com.openelements.hedera.base.NftClient;
 import com.openelements.hedera.base.Nft;
-import com.openelements.hedera.base.AccountClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,16 +46,7 @@ public class SkateBoardEndpoint {
     private NftClient nftClient;
 
     @Autowired
-    private AdminBackendService adminBackendService;
-
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
     private PinataService pinataService;
-
-    @Autowired
-    private AccountClient accountClient;
 
     private static final String[] CID = {
             "QmV7R7dtVhxmY3YdiuU2oyfmR2QdTTzdwVxNsJgAS5h4DP",
@@ -76,24 +64,20 @@ public class SkateBoardEndpoint {
 
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getStakesForUser")
-    public List<Map<String, Object>> getCardsForUser(@RequestParam String userMail) throws Exception {
+    public List<Map<String, Object>> getCardsForUser(@RequestParam String userAccountId) throws Exception {
         final List<Map<String, Object>> results = new ArrayList<>();
 
         TokenId cardTokenId = TokenId.fromString(TOKEN_ID);
+        AccountId accountId = AccountId.fromString(userAccountId);
 
         if (tokenAdmin == null) {
             // throw new IllegalStateException("Admin account not found");
             tokenAdmin = AccountId.fromString(tokenAdminId);
             tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
         }
-
-        final AdminBackendService.AccountAndKey accountAndKey = adminBackendService.getHederaAccountForUser(userMail);
-        final AccountId accountId = accountAndKey.accountId();
-        final PrivateKey accountPrivateKey = accountAndKey.privateKey();
         final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
         if (nfts.isEmpty()) {
-            nftClient.associateNft(cardTokenId, accountId, accountPrivateKey);
             List<String> nftMetadata = new ArrayList<>();
             Random random = new Random();
 
