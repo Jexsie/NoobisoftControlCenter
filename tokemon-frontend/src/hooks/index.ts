@@ -4,9 +4,9 @@ import { dataFetcher } from "../api";
 import { apiUrl } from "../constants";
 import { NftMeta } from "../types";
 
-export function useUserNfts(email: string) {
+export function useUserNfts(accountId: string) {
   const { isLoading, isValidating, error, data } = useSWR<Array<NftMeta>>(
-    `${apiUrl}getStakesForUser?userMail=${email}`,
+    `${apiUrl}getStakesForUser?userAccountId=${accountId}`,
     dataFetcher
   );
 
@@ -21,7 +21,9 @@ export function useUserNfts(email: string) {
             if (!storedImage) {
               try {
                 const response = await fetch(
-                  `https://ipfs.io/ipfs/${nft.image.split('ipfs://')[1]}`
+                  `https://ivory-perfect-mosquito-293.mypinata.cloud/ipfs/${
+                    nft.image.split("ipfs://")[1]
+                  }`
                 );
                 const blob = await response.blob();
                 const reader = new FileReader();
