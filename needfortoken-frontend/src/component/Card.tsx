@@ -1,5 +1,5 @@
-// import { NftMeta } from "../types";
-// import { getUser } from "../utils";
+import { NftMeta } from "../types";
+import { getUser } from "../utils";
 
 const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
   const {
@@ -10,7 +10,10 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
 
   if (name === "card") return;
   return (
-    <div className=" flex justify-center items-center">
+    <div
+      // style={{ height: "100vh", width: "100vw" }}
+      className=" flex justify-center items-center"
+    >
       <div
         style={{ width: "300px" }}
         className=" relative flex justify-center items-center"
@@ -51,4 +54,4 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
   );
 };
 
-// export default Card;
+export default Card;
