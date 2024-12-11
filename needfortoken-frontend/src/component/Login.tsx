@@ -11,6 +11,7 @@ import {
   TokenId,
 } from "@hashgraph/sdk";
 import { setActiveUser } from "../utils";
+import { projectId, tokenId } from "../constants";
 
 const appMetadata = {
   name: "Tokemon",
@@ -23,9 +24,6 @@ const appMetadata = {
 
 export default function Login({ isOpen, setIsOpen }) {
   const navigate = useNavigate();
-
-  const projectId = "8140cdc45c6cb9f9c91446d407554b15";
-  const tokenId = "0.0.5219756";
 
   let hashconnect: HashConnect;
   let state: HashConnectConnectionState =
