@@ -23,6 +23,9 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "target": "esnext",
-    "typeRoots": ["vite/client"]
+    "typeRoots": ["vite/client"],
+    "paths": {
+      "@hashgraph/sdk": ["./node_modules/@hashgraph/sdk"]
+    }
   }
 }
