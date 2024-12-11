@@ -10,10 +10,7 @@ const Card = ({ nft, card }: { nft: NftMeta; card: string }) => {
 
   if (name === "card") return;
   return (
-    <div
-      // style={{ height: "100vh", width: "100vw" }}
-      className=" flex justify-center items-center"
-    >
+    <div className=" flex justify-center items-center">
       <div
         style={{ width: "300px" }}
         className=" relative flex justify-center items-center"
