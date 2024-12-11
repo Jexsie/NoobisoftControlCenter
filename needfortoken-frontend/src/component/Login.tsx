@@ -33,7 +33,6 @@ export default function Login({ isOpen, setIsOpen }) {
   let pairingData: SessionData;
 
   async function init() {
-    //create the hashconnect instance
     hashconnect = new HashConnect(
       LedgerId.TESTNET,
       projectId,
@@ -41,13 +40,10 @@ export default function Login({ isOpen, setIsOpen }) {
       true
     );
 
-    //register events
     setUpHashConnectEvents();
 
-    //initialize
     await hashconnect.init();
 
-    //open pairing modal
     hashconnect.openPairingModal();
     await associateTx();
     setActiveUser(pairingData.accountIds[0]);
@@ -69,11 +65,10 @@ export default function Login({ isOpen, setIsOpen }) {
 
   const associateTx = async () => {
     try {
-      const signer = hashconnect.getSigner(
-        AccountId.fromString(pairingData?.accountIds[0])
-      );
+      const accountId = AccountId.fromString(pairingData.accountIds[0]);
+      const signer = hashconnect.getSigner(accountId);
       const transaction = new TokenAssociateTransaction()
-        .setAccountId(AccountId.fromString(pairingData?.accountIds[0]))
+        .setAccountId(accountId)
         .setTokenIds([TokenId.fromString(tokenId)])
         .freezeWithSigner(signer);
 
@@ -113,12 +108,6 @@ export default function Login({ isOpen, setIsOpen }) {
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Connect wallet
-          </button>
-          <button
-            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={associateTx}
-          >
-            Associate
           </button>
         </div>
       </div>
