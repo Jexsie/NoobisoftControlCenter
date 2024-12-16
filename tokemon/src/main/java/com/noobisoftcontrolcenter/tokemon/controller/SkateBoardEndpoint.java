@@ -9,8 +9,6 @@ import com.noobisoftcontrolcenter.tokemon.service.PinataService;
 import com.openelements.hedera.base.NftRepository;
 import com.openelements.hedera.base.NftClient;
 import com.openelements.hedera.base.Nft;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,8 +25,6 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin(origins = "*")
 @RestController
 public class SkateBoardEndpoint {
-
-    private static final Logger logger = LoggerFactory.getLogger(SkateBoardEndpoint.class);
 
     @Value("${spring.hedera.accountId}")
     private String tokenAdminId;
@@ -114,7 +110,6 @@ public class SkateBoardEndpoint {
 
         for(Nft nft: allNfts) {
             if (!nft.tokenId().toString().equals(TOKEN_ID)) {
-                List<Map<String, Object>> metadata = pinataService.getMetadata(new String(nft.metadata()));
                 results.add(nft);
             }
         }

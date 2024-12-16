@@ -10,8 +10,10 @@ import {
   TokenAssociateTransaction,
   TokenId,
 } from "@hashgraph/sdk";
-import { setActiveUser } from "../utils";
+import { removeUser, setActiveUser } from "../utils";
 import { projectId, tokenId } from "../constants";
+import { isUserAssociated } from "../api";
+import { useEffect } from "react";
 
 const appMetadata = {
   name: "Need for Token",
@@ -31,7 +33,6 @@ export default function Login({ isOpen, setIsOpen }) {
   let pairingData: SessionData;
 
   async function init() {
-    //create the hashconnect instance
     hashconnect = new HashConnect(
       LedgerId.TESTNET,
       projectId,
@@ -39,16 +40,21 @@ export default function Login({ isOpen, setIsOpen }) {
       true
     );
 
-    //register events
     setUpHashConnectEvents();
 
-    //initialize
     await hashconnect.init();
 
-    //open pairing modal
     hashconnect.openPairingModal();
-    await associateTx();
-    setActiveUser(pairingData.accountIds[0]);
+
+    if (pairingData.accountIds[0]) {
+      setActiveUser(pairingData.accountIds[0]);
+      if (await !isUserAssociated(pairingData.accountIds[0])) {
+        console.log("not associated");
+        await associateTx();
+      } else {
+        navigate("/dashboard");
+      }
+    }
   }
 
   function setUpHashConnectEvents() {
@@ -67,11 +73,10 @@ export default function Login({ isOpen, setIsOpen }) {
 
   const associateTx = async () => {
     try {
-      const signer = hashconnect.getSigner(
-        AccountId.fromString(pairingData?.accountIds[0])
-      );
+      const accountId = AccountId.fromString(pairingData.accountIds[0]);
+      const signer = hashconnect.getSigner(accountId);
       const transaction = new TokenAssociateTransaction()
-        .setAccountId(AccountId.fromString(pairingData?.accountIds[0]))
+        .setAccountId(accountId)
         .setTokenIds([TokenId.fromString(tokenId)])
         .freezeWithSigner(signer);
 
@@ -86,7 +91,20 @@ export default function Login({ isOpen, setIsOpen }) {
     }
   };
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      removeUser();
+      await hashconnect.disconnect();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hashconnect, pairingData]);
+
+  if (!isOpen) return;
 
   return (
     <div
