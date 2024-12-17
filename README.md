@@ -90,7 +90,7 @@ To log in to the games using HashPack, follow these steps:
 - Install the HashPack Chrome Extension from the Chrome Web Store.
 - Set up your HashPack wallet by creating a new account or importing an existing one.
 - Open the game application (Tokemon game or Needfortoken Game).
-- Click on the "Login with HashPack" button.
+- Click on the "Get started" button. A model will open up, click the 'Connect wallet' button to initialize login.
 - Authorize the connection in your HashPack wallet. You may need to approve the login request within the HashPack Chrome extension.
 - Once logged in, you will be redirected to the game interface with access to your NFTs.
 
