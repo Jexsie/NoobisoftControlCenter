@@ -75,26 +75,24 @@ To start the application, follow these steps:
 
 This script will:
 
-- **Start game1-server**: Executes Maven commands to build and run the needfortoken backend server on `port 8443`.
+- **Start game1-server**: Executes Maven commands to build and run the needfortoken backend server on `port 8070`.
 
 - **Start game1-frontend**: Installs necessary dependencies and runs the needfortoken-frontend React application in development mode on `port 3000`.
 
-- **Start game2-server**: Executes Maven commands to build and run the tokemon backend server on `port 8444`.
+- **Start game2-server**: Executes Maven commands to build and run the tokemon backend server on `port 8000`.
 
 - **Start game2-frontend**: Installs necessary dependencies and runs the tokemon-frontend React application in development mode on `port 3002`.
 
-### Application Users
+### How to Log in with HashPack
 
-You can login in both games using any of the User mails stored in the database
+To log in to the games using HashPack, follow these steps:
 
-- user1@example.com
-- user2@example.com
-- user3@example.com
-- user4@example.com
-- user5@example.com
-- user6@example.com
-- user7@example.com
-- user8@example.com
+- Install the HashPack Chrome Extension from the Chrome Web Store.
+- Set up your HashPack wallet by creating a new account or importing an existing one.
+- Open the game application (Tokemon game or Needfortoken Game).
+- Click on the "Login with HashPack" button.
+- Authorize the connection in your HashPack wallet. You may need to approve the login request within the HashPack Chrome extension.
+- Once logged in, you will be redirected to the game interface with access to your NFTs.
 
 ### Terminating the Application
 
