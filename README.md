@@ -23,6 +23,8 @@ At NFTs4Games we seamlessly share NFTs between games - Unlock the power of NFT i
   - New users receive 4 starter cards on their first login.
   - The game interface displays the user's entire card collection.
 
+- Need for token is live at https://needfortoken-frontend-open-elements-58d77c8e.koyeb.app/ 
+
 * ### Game 2: Skateboard Game(Tokemon)
 
   - **Concept**: A skateboard customization game where each skateboard is an NFT.
@@ -31,6 +33,8 @@ At NFTs4Games we seamlessly share NFTs between games - Unlock the power of NFT i
   - Players collect custom skateboards, each with unique images, though all share the same shape.
   - New users receive random 4 skateboards when they log in for the first time.
   - The game interface displays the username and a list of available skateboards.
+
+- Tokemon is live at https://tokemon-frontend-open-elements-8f231e3a.koyeb.app/
 
 ## Technology Stack
 
