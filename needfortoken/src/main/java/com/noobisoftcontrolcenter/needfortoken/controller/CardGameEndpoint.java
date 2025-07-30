@@ -4,25 +4,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
-import com.openelements.hedera.base.NftRepository;
-import com.openelements.hedera.base.NftClient;
-import com.openelements.hedera.base.Nft;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hedera.hashgraph.sdk.AccountId;
+import com.hedera.hashgraph.sdk.Client;
 import com.hedera.hashgraph.sdk.PrivateKey;
+import com.hedera.hashgraph.sdk.TokenAssociateTransaction;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
+import com.openelements.hedera.base.Nft;
+import com.openelements.hedera.base.NftClient;
+import com.openelements.hedera.base.NftRepository;
 
 import io.swagger.annotations.ApiOperation;
+import jakarta.annotation.PostConstruct;
 
 @CrossOrigin(origins = "*")
 @RestController
+@RequestMapping("/cardgame")
 public class CardGameEndpoint {
 
 
@@ -32,8 +37,8 @@ public class CardGameEndpoint {
     @Value("${spring.hedera.privateKey}")
     private String tokenAdminKey;
 
-    private AccountId tokenAdmin;
-    private PrivateKey tokenAdminPrivateKey;
+    @Value("${spring.hedera.tokenId}")
+    private String tokenId;
 
     @Autowired
     private NftRepository nftRepository;
@@ -41,9 +46,11 @@ public class CardGameEndpoint {
     @Autowired
     private NftClient nftClient;
 
-
     @Autowired
     private PinataService pinataService;
+
+    private AccountId tokenAdmin;
+    private PrivateKey tokenAdminPrivateKey;
 
     private static final String[] CID = {
             "QmRGHv17TkToCWhKSiW7SkyYvJ4TbXX8ib59tMjAtGpCWM",
@@ -57,27 +64,28 @@ public class CardGameEndpoint {
             "Qmf4BLov3HZifCknS9eSE9fUWFtmE8WRd3LXjLSkhoBhBJ"
     };
 
-    private final static String TOKEN_ID = "0.0.5219756";
+    @PostConstruct
+    public void init() {
+        tokenAdmin = AccountId.fromString(tokenAdminId);
+        tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
+    }
 
     @ApiOperation("Get cards for user endpoint")
     @CrossOrigin
     @GetMapping("/getCardsForUser")
-    public List<Map<String, Object>> getCardsForUser(@RequestParam String userAccountId) throws Exception {
-        final List<Map<String, Object>> results = new ArrayList<>();
+    public List<Map<String, Object>> getCardsForUser(@RequestParam String userAccountId, @RequestParam String userPrivateKey) throws Exception {
+        List<Map<String, Object>> results = new ArrayList<>();
 
-        TokenId cardTokenId = TokenId.fromString(TOKEN_ID);
+        TokenId cardTokenId = TokenId.fromString(tokenId);
         AccountId accountId = AccountId.fromString(userAccountId);
 
-        if (tokenAdmin == null) {
-            // throw new IllegalStateException("Admin account not found");
-            tokenAdmin = AccountId.fromString(tokenAdminId);
-            tokenAdminPrivateKey = PrivateKey.fromString(tokenAdminKey);
-        }
+        PrivateKey accountPrivateKey = PrivateKey.fromString(userPrivateKey);
 
-
-        final List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
+        List<Nft> nfts = nftRepository.findByOwnerAndType(accountId, cardTokenId);
 
         if (nfts.isEmpty()) {
+            associateTokenToUser(accountId, accountPrivateKey, cardTokenId);
+
             List<String> nftMetadata = new ArrayList<>();
             Random random = new Random();
 
@@ -86,7 +94,7 @@ public class CardGameEndpoint {
                 nftMetadata.add(CID[index]);
             }
 
-            final List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
+            List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
 
             for (Long serial : serials) {
                 nftClient.transferNft(cardTokenId, serial, tokenAdmin, tokenAdminPrivateKey, accountId);
@@ -101,22 +109,19 @@ public class CardGameEndpoint {
             }
         }
 
-        for (Nft nft: getSupportedNftsForAccount(accountId)) {
-            results.addAll(pinataService.getMetadata(new String(nft.metadata())));
-        }
-
         return results;
     }
 
-    private List<Nft> getSupportedNftsForAccount(AccountId accountId) throws Exception {
-        List<Nft> results = new ArrayList<>();
-        List<Nft> allNfts = nftRepository.findByOwner(accountId);
+    private void associateTokenToUser(AccountId userAccountId, PrivateKey userPrivateKey, TokenId tokenId) throws Exception {
+        Client client = Client.forTestnet();
+        client.setOperator(tokenAdmin, tokenAdminPrivateKey);
 
-        for(Nft nft: allNfts) {
-            if (!nft.tokenId().toString().equals(TOKEN_ID)) {
-                results.add(nft);
-            }
-        }
-        return results;
+        new TokenAssociateTransaction()
+                .setAccountId(userAccountId)
+                .setTokenIds(List.of(tokenId))
+                .freezeWith(client)
+                .sign(userPrivateKey)
+                .execute(client)
+                .getReceipt(client);
     }
 }
