@@ -2,6 +2,8 @@ package com.noobisoftcontrolcenter.tokemon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noobisoftcontrolcenter.tokemon.model.MetadataRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +18,8 @@ import java.util.Map;
 
 @Service
 public class PinataService {
+
+    private static final Logger logger = LoggerFactory.getLogger(PinataService.class);
 
     @Value("${pinata.api.key}")
     private String pinataApiKey;
@@ -32,8 +36,13 @@ public class PinataService {
     }
 
     public List<Map<String, Object>> getMetadata(String ipfsHash) {
-        String url = "https://ipfs.io/ipfs/" + ipfsHash;
-        return restTemplate.getForObject(url, List.class);
+        try {
+            String url = "https://ipfs.io/ipfs/" + ipfsHash;
+            return restTemplate.getForObject(url, List.class);
+        } catch (Exception e) {
+            logger.error("Failed to fetch metadata for IPFS hash: {}", ipfsHash, e);
+            throw new RuntimeException("Failed to fetch metadata from IPFS", e);
+        }
     }
 
     public String pinJson(MetadataRequest metadataRequest) throws Exception {
