@@ -44,5 +44,9 @@ ENV SERVER_PORT=8000
 # Expose the port
 EXPOSE 8000
 
+# Health check
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8000/actuator/health || exit 1
+
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
