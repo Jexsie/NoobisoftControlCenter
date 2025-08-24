@@ -1,0 +1,64 @@
+services:
+  needfortoken:
+    build:
+      context: ./needfortoken
+      dockerfile: Dockerfile
+    container_name: needfortoken-backend
+    ports:
+      - "8070:8070"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8070
+      - SPRING_HEDERA_ACCOUNTID=0.0.4691094
+      - SPRING_HEDERA_PRIVATEKEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
+      - SPRING_HEDERA_NETWORK_NAME=testnet
+      - PINATA_API_KEY=d9667e559a6df24db59b
+      - PINATA_API_SECRET=f18581732e49b5d78333878709848bc2b6682d3a45d94b1f46310f58c4187f36
+    volumes:
+      - needfortoken-data:/app/data
+    networks:
+      - noobisoft-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  tokemon:
+    build:
+      context: ./tokemon
+      dockerfile: Dockerfile
+    container_name: tokemon-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8000
+      - SPRING_HEDERA_ACCOUNTID=0.0.4691094
+      - SPRING_HEDERA_PRIVATEKEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
+      - SPRING_HEDERA_NETWORK_NAME=testnet
+      - PINATA_API_KEY=d9667e559a6df24db59b
+      - PINATA_API_SECRET=f18581732e49b5d78333878709848bc2b6682d3a45d94b1f46310f58c4187f36
+    volumes:
+      - tokemon-data:/app/data
+    networks:
+      - noobisoft-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  needfortoken-data:
+    driver: local
+  tokemon-data:
+    driver: local
+
+networks:
+  noobisoft-network:
+    driver: bridge 
