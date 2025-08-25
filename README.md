@@ -54,8 +54,39 @@ To start the application, follow these steps:
   - **_Maven_** (version 3.8.9)
   - **_Node.js_** (version 20.11.1)
   - **_npm_** (version 10.7.0)
+  - **_Docker_** (version 20.10+) and Docker Compose (version 2.0+) - for containerized deployment
 
 ### Running the Application
+
+#### Option 1: Using Docker (Recommended)
+
+1.  #### Clone the repository:
+
+        git clone https://github.com/Jexsie/NoobisoftControlCenter.git
+        cd NoobisoftControlCenter
+
+2.  #### Set up environment variables (optional):
+
+        cp env.example .env
+        # Edit .env file with your configuration if needed
+
+3.  #### Build and start backend services using Docker:
+
+        # Using the provided script
+        chmod +x build-and-run.sh
+        ./build-and-run.sh --build
+
+        # Or using Docker Compose directly
+        docker compose up --build -d
+
+4.  #### Access the backend services:
+
+        - NeedForToken Backend: http://localhost:8070
+        - Tokemon Backend: http://localhost:8000
+        - Health Checks: http://localhost:8070/actuator/health, http://localhost:8000/actuator/health
+        - API Documentation: http://localhost:8070/swagger-ui/index.html, http://localhost:8000/swagger-ui/index.html
+
+#### Option 2: Traditional Method
 
 1.  #### Clone the repository:
 
@@ -76,6 +107,24 @@ To start the application, follow these steps:
 
 4.  #### Run the script to start all servers and frontends:
         ./start_servers.sh
+
+#### Docker Management Commands
+
+```bash
+# Start services
+./build-and-run.sh --start
+
+# Stop services
+./build-and-run.sh --down
+
+# View logs
+./build-and-run.sh --logs
+
+# Clean up Docker resources
+./build-and-run.sh --clean
+```
+
+#### Traditional Method Details
 
 This script will:
 
