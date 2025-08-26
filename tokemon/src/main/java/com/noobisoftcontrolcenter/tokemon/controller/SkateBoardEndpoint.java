@@ -58,18 +58,6 @@ public class SkateBoardEndpoint {
 
     private final static String TOKEN_ID = "0.0.5219756";
 
-    @ApiOperation("Simple health check endpoint")
-    @GetMapping("/health-check")
-    public Map<String, Object> healthCheck() {
-        return Map.of(
-            "status", "OK",
-            "service", "tokemon-backend",
-            "timestamp", System.currentTimeMillis(),
-            "hederaAccountId", tokenAdminId,
-            "network", "testnet"
-        );
-    }
-
     @ApiOperation("Get cards for user endpoint")
     @GetMapping("/getStakesForUser")
     public List<Map<String, Object>> getCardsForUser(@RequestParam String userAccountId) throws Exception {
