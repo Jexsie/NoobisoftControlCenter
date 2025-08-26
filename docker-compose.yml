@@ -7,14 +7,13 @@ services:
     ports:
       - "8070:8070"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=docker
       - SERVER_PORT=8070
-      - HEDERA_ACCOUNT_ID=0.0.4691094
-      - HEDERA_PRIVATE_KEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
-      - HEDERA_NETWORK=testnet
+      - SPRING_HEDERA_ACCOUNTID=0.0.4691094
+      - SPRING_HEDERA_PRIVATEKEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
+      - SPRING_HEDERA_NETWORK_NAME=testnet
       - PINATA_API_KEY=d9667e559a6df24db59b
       - PINATA_API_SECRET=f18581732e49b5d78333878709848bc2b6682d3a45d94b1f46310f58c4187f36
-      - CORS_ALLOWED_ORIGINS=https://needfortoken.open-elements.cloud,https://www.needfortoken.open-elements.cloud,http://localhost:3000,http://localhost:5173
     volumes:
       - needfortoken-data:/app/data
     networks:
@@ -35,14 +34,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=docker
       - SERVER_PORT=8000
-      - HEDERA_ACCOUNT_ID=0.0.4691094
-      - HEDERA_PRIVATE_KEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
-      - HEDERA_NETWORK=testnet
+      - SPRING_HEDERA_ACCOUNTID=0.0.4691094
+      - SPRING_HEDERA_PRIVATEKEY=302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5
+      - SPRING_HEDERA_NETWORK_NAME=testnet
       - PINATA_API_KEY=d9667e559a6df24db59b
       - PINATA_API_SECRET=f18581732e49b5d78333878709848bc2b6682d3a45d94b1f46310f58c4187f36
-      - CORS_ALLOWED_ORIGINS=https://tokemon.open-elements.cloud,https://www.tokemon.open-elements.cloud,http://localhost:3000,http://localhost:5173
     volumes:
       - tokemon-data:/app/data
     networks:
