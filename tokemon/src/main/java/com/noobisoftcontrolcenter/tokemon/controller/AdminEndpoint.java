@@ -1,24 +1,33 @@
 package com.noobisoftcontrolcenter.tokemon.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.Hbar;
 import com.hedera.hashgraph.sdk.PrivateKey;
+import com.hedera.hashgraph.sdk.Status;
 import com.hedera.hashgraph.sdk.TokenId;
 import com.noobisoftcontrolcenter.tokemon.model.MetadataRequest;
+import com.noobisoftcontrolcenter.tokemon.service.HederaAssociationService;
 import com.noobisoftcontrolcenter.tokemon.service.PinataService;
-import com.openelements.hedera.base.AccountClient;
-import com.openelements.hedera.base.NftRepository;
-import com.openelements.hedera.base.NftClient;
 import com.openelements.hedera.base.Account;
+import com.openelements.hedera.base.AccountClient;
 import com.openelements.hedera.base.Nft;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.openelements.hedera.base.NftClient;
+import com.openelements.hedera.base.NftRepository;
 
-import java.util.List;
+import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -45,6 +54,9 @@ public class AdminEndpoint {
     @Autowired
     private PinataService pinataService;
 
+    @Autowired
+    private HederaAssociationService hederaAssociationService;
+
 
     @ApiOperation("Creates card token type")
     @GetMapping("/createSkateTokenType")
@@ -62,6 +74,26 @@ public class AdminEndpoint {
     @GetMapping("/createNewAccount")
     public AccountAndKeyData createNewAccount() throws Exception {
         final Account account = accountClient.createAccount(Hbar.ZERO);
+        
+        // Automatically associate the new account with the token
+        try {
+            String tokenId = "0.0.5219756";
+            Status status = hederaAssociationService.associateAccountWithToken(
+                account.accountId().toString(), 
+                account.privateKey().toString(), 
+                tokenId
+            );
+            
+            if (status == Status.SUCCESS) {
+                logger.info("Successfully associated new account {} with token {}", account.accountId(), tokenId);
+            } else {
+                logger.warn("Failed to associate new account {} with token {}. Status: {}", account.accountId(), tokenId, status);
+            }
+        } catch (Exception e) {
+            logger.error("Error associating new account {} with token: {}", account.accountId(), e.getMessage());
+            // Don't fail the account creation, just log the error
+        }
+        
         return new AccountAndKeyData(account.accountId().toString(), account.privateKey().toString());
     }
 

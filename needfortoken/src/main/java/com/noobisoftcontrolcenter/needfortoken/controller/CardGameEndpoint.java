@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
-import com.openelements.hedera.base.NftRepository;
-import com.openelements.hedera.base.NftClient;
-import com.openelements.hedera.base.Nft;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hedera.hashgraph.sdk.AccountId;
 import com.hedera.hashgraph.sdk.PrivateKey;
 import com.hedera.hashgraph.sdk.TokenId;
+import com.noobisoftcontrolcenter.needfortoken.service.PinataService;
+import com.openelements.hedera.base.Nft;
+import com.openelements.hedera.base.NftClient;
+import com.openelements.hedera.base.NftRepository;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -89,7 +89,18 @@ public class CardGameEndpoint {
             final List<Long> serials = nftClient.mintNfts(cardTokenId, nftMetadata);
 
             for (Long serial : serials) {
-                nftClient.transferNft(cardTokenId, serial, tokenAdmin, tokenAdminPrivateKey, accountId);
+                try {
+                    nftClient.transferNft(cardTokenId, serial, tokenAdmin, tokenAdminPrivateKey, accountId);
+                } catch (Exception e) {
+                    if (e.getMessage().contains("TOKEN_NOT_ASSOCIATED_TO_ACCOUNT")) {
+                        // Handle token association error
+                        throw new RuntimeException("Account " + userAccountId + " is not associated with token " + TOKEN_ID + ". " +
+                                "Please associate the account with the token before transferring NFTs. " +
+                                "This can be done through the frontend wallet integration or by calling the association endpoint.");
+                    } else {
+                        throw e;
+                    }
+                }
             }
 
             for (String ipfsHash : nftMetadata) {
