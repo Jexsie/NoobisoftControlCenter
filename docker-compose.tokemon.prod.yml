@@ -1,0 +1,29 @@
+services:
+  tokemon:
+    build:
+      context: ./tokemon
+      dockerfile: Dockerfile
+    container_name: tokemon-backend
+    ports:
+      - "80:8000"  # Map external port 80 to internal port 8000
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SERVER_PORT=8000
+      - SPRING_HEDERA_ACCOUNTID=${HEDERA_ACCOUNT_ID:-0.0.4691094}
+      - SPRING_HEDERA_PRIVATEKEY=${HEDERA_PRIVATE_KEY:-302e020100300506032b6570042204208507a781b3f5637abc84df14a877985a74eb9c7f8829169f6eabc68abaf521b5}
+      - SPRING_HEDERA_NETWORK_NAME=${HEDERA_NETWORK:-testnet}
+      - PINATA_API_KEY=${PINATA_API_KEY:-d9667e559a6df24db59b}
+      - PINATA_API_SECRET=${PINATA_API_SECRET:-f18581732e49b5d78333878709848bc2b6682d3a45d94b1f46310f58c4187f36}
+    volumes:
+      - tokemon-data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  tokemon-data:
+    driver: local 
