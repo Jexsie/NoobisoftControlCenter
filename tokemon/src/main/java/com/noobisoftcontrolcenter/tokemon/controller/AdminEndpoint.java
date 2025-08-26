@@ -107,16 +107,6 @@ public class AdminEndpoint {
         }
     }
 
-    @PostMapping("/pinJson2")
-    public String pinJson2(@RequestBody MetadataRequest metadataRequest) {
-        try {
-            return pinataService.pinJson(metadataRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "Failed to pin JSON to IPFS: " + e.getMessage();
-        }
-    }
-
     @ApiOperation("Clear account NFTs by transferring them to the admin")
     @GetMapping("/clearAccountNfts")
     public String clearAccountNfts(@RequestParam String addressId) throws Exception {
